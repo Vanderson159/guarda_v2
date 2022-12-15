@@ -5,14 +5,22 @@ import 'package:guardaappv2/data/model/auth_model.dart';
 class HomeController extends GetxController{
   final box = GetStorage('guardaapp');
 
-
   void logOut(){
     box.erase();
     Get.offAllNamed('/login');
   }
 
   void telaAddOcorrencia(){
-    Get.offAllNamed('/tela-addOcorrencia');
+    Get.offNamed('/tela-addOcorrencia');
+  }
+
+  void telaResultOcorrencia(){
+    AuthModel auth = box.read('auth');
+    if(auth.user!.tipoUser == 1){
+      Get.offNamed('/tela-resultOcorrenciaADM');
+    }else{
+      Get.offNamed('/tela-resultOcorrencia');
+    }
   }
 
   String username(){

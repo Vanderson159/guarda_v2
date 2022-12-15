@@ -21,7 +21,15 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
   Future<bool?> showConfirmationDialog() {
     return showDialog(context: context, builder: (context){
       if(tipo == 3){
-        return HomeView();
+        return AlertDialog(
+          title: const Text('Deseja voltar?'),
+          actions: [
+            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Não'),),
+            OutlinedButton(onPressed: () {
+                Get.offAllNamed('/home');
+            }, child: const Text('Sim'),),
+          ],
+        );
       }else{
         return AlertDialog(
           title: const Text('Deseja sair sem salvar?'),
@@ -40,7 +48,6 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -55,3 +62,4 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
     );
   }
 }
+

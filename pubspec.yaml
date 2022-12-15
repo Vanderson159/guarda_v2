@@ -24,6 +24,10 @@ dependencies:
   get_storage: ^2.0.3
   get:
   image_picker: ^0.6.0
+  # create pdf document
+  pdf: ^3.1.0
+  # open pdf document
+  open_file: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

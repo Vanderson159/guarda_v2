@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/base_url.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
-import 'package:guardaappv2/modules/login/login_controller.dart';
 import 'package:http/http.dart' as http;
 
 class OcorrenciaApiClient {
@@ -34,7 +32,8 @@ class OcorrenciaApiClient {
         "guarda_id": ocorrencia.guardaId.toString(),
       });
       if (response.statusCode == 200) {
-        OcorrenciaModel ocorrenciaModel = OcorrenciaModel.fromJson(json.decode(response.body));
+        OcorrenciaModel ocorrenciaModel =
+            OcorrenciaModel.fromJson(json.decode(response.body));
         box.write('ocorrencia', ocorrenciaModel);
 
         Get.defaultDialog(
@@ -71,5 +70,73 @@ class OcorrenciaApiClient {
       print(err);
     }
     return json.decode(erro);
+  }
+
+  Future<List<OcorrenciaModel>> listarDados() async {
+    AuthModel auth = box.read('auth');
+    String token = '';
+    if (auth.accessToken!.isNotEmpty) {
+      token = auth.accessToken!;
+    }
+    try {
+      var response = await http.get(Uri.parse(baseUrlOcorrencias),
+          headers: {"Authorization": 'Bearer ' + token});
+      if (response.statusCode == 200) {
+        List list = json.decode(response.body);
+        List<OcorrenciaModel>? ocorrencias = [];
+        for (var i = 0; i < list.length; i++) {
+          ocorrencias.add(OcorrenciaModel.fromJson(list[i]));
+        }
+
+        if (ocorrencias.isEmpty) {
+          Get.defaultDialog(
+              title: "Nenhuma ocorrência encontrada",
+              content: Text(':('),
+              actions: [
+                ElevatedButton(
+                  onPressed: () => Get.offAllNamed('/home'),
+                  child: Text('OK'),
+                ),
+              ]);
+        }
+        return ocorrencias;
+      } else {
+        Get.defaultDialog(
+            title: "Erro ao listar ocorrências",
+            content: Text(
+                "${jsonDecode(response.body)['error']} : Falha ao Inserir"));
+        print('erro -get: ' + response.body);
+      }
+    } catch (err) {
+      Get.defaultDialog(
+        title: "Erro na Inserção de Ocorrência",
+        content: Text("$err"),
+      );
+      print(err);
+    }
+    return json.decode(erro);
+  }
+
+  Future<String> buscarQrcode(var id) async {
+    var qrcode;
+    AuthModel auth = box.read('auth');
+    String token = '';
+    if (auth.accessToken!.isNotEmpty) {
+      token = auth.accessToken!;
+    }
+
+    try {
+      var response = await http.post(Uri.parse(baseUrlQrcodBuscarQrCode),
+          headers: {"Authorization": 'Bearer ' + token},
+          body: {"id": id.toString()});
+
+      if (response.statusCode == 200) {
+        qrcode = json.decode(response.body);
+        return qrcode['qrcode'].toString();
+      }
+    } catch (err) {
+      return '';
+    }
+    return '';
   }
 }

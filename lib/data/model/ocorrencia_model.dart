@@ -14,14 +14,14 @@ class OcorrenciaModel {
   String? base64img;
 
   OcorrenciaModel(
-      {this.id,
+  this.id,
         this.dataHora,
         this.boletimAtendimento,
         this.boletimOcorrencia,
         this.endereco,
         this.local,
         this.fatos,
-        this.orientacaoGuarda,
+        this.orientacaoGuarda,{
         this.arquivado,
         this.qrcode,
         this.guardaId});
@@ -57,7 +57,7 @@ class OcorrenciaModel {
   }
 
   static OcorrenciaModel tempOcorrencia(){
-    OcorrenciaModel x = OcorrenciaModel();
+    OcorrenciaModel x = OcorrenciaModel(0, '', '', '', '', '', '', '');
     return x;
   }
 }

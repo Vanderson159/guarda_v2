@@ -55,11 +55,11 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
         ocorrenciaAux.base64img = base64Image;
         ocorrenciaAux.nomeImg = fileName;
 
-        ImagemModel imagem = ImagemModel(0, '', '');
+        ImagemModel imagem = ImagemModel();
 
-        imagem.fileName = fileName;
+        imagem.nomeImg = fileName;
         imagem.image = _image;
-        imagem.base64Image = base64Image;
+        imagem.base64img = base64Image;
         imagem.bytes = base64Decode(base64Image);
         controller.armazenarImagem(imagem);
       return 1;
@@ -68,7 +68,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
     Widget imageView(){
       if(controller.resgatarImagem() != null){
         ImagemModel imagemTemp = controller.resgatarImagem();
-        var imageBytes = base64Decode(imagemTemp.base64Image.toString());
+        var imageBytes = base64Decode(imagemTemp.base64img.toString());
         return Container(
           width: 300,
           height: 300,
@@ -133,7 +133,6 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                                 ElevatedButton(//nãoooooo
                                   child: Text("SIM"),
                                   onPressed: (){
-
                                     Get.offAllNamed('/home');
                                   },
                                 ),
@@ -159,7 +158,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                       if(imagemTemp.isNull){
                         showConfirmationDialogImage();
                       }else{
-                        if(imagemTemp.fileName != null && imagemTemp.base64Image != null){
+                        if(imagemTemp.nomeImg != null && imagemTemp.base64img != null){
                           showDialog(
                               context: context,
                               builder: (contextDialog) {

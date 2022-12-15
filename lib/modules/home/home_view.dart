@@ -68,11 +68,7 @@ class HomeView extends GetView<HomeController> {
                       style: TextStyle(fontSize: 45),
                     ),
                     onTap: () => {
-                      //if(providerLogin.tipoUser == 1){
-                        //Navigator.pushNamed(context, 'tela-resultaddOcorrenciaADM'),
-                     // }else{
-                        //Navigator.pushNamed(context, 'tela-resultaddOcorrencia'),
-                      //}
+                      controller.telaResultOcorrencia()
                     },
                   ),
                 ),

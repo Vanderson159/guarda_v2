@@ -38,7 +38,7 @@ class _ImagemAuthDialog2State extends State<ImagemAuthDialog2> {
         ),
         TextButton(
           onPressed: () {
-            imagem.setidOcorrencia(idLast!);
+            imagem.ocorrenciaId = idLast!;
 
             ImagemApi.inserirImagem(imagem, idLast).then((value){
               if (value == 1) {

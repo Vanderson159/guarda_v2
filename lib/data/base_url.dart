@@ -3,3 +3,7 @@ const baseUrlLogin = 'http://192.168.1.117/guardaWEB/api/login';
 const baseUrlRegister = 'http://192.168.1.117/guardaWEB/api/register';
 const baseUrlOcorrencia = 'http://192.168.1.117/guardaWEB/api/ocorrencias';
 const baseUrlImagem = 'http://192.168.1.117/guardaWEB/api/imagens';
+const baseUrlOcorrencias = 'http://192.168.1.117/guardaWEB/api/ocorrencias';
+const baseUrlQrcodeInsert = 'http://192.168.1.117/guardaWEB/api/insertQrcode';
+const baseUrlQrcodBuscarIdImg = 'http://192.168.1.117/guardaWEB/api/buscarIdImage';
+const baseUrlQrcodBuscarQrCode = 'http://192.168.1.117/guardaWEB/api/buscarQrcode';
