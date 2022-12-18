@@ -85,7 +85,9 @@ class OcorrenciaApiClient {
         List list = json.decode(response.body);
         List<OcorrenciaModel>? ocorrencias = [];
         for (var i = 0; i < list.length; i++) {
-          ocorrencias.add(OcorrenciaModel.fromJson(list[i]));
+          if (list[i]['arquivado'] != 1) {
+            ocorrencias.add(OcorrenciaModel.fromJson(list[i]));
+          }
         }
 
         if (ocorrencias.isEmpty) {
@@ -138,5 +140,25 @@ class OcorrenciaApiClient {
       return '';
     }
     return '';
+  }
+
+  Future<int> arquivar(int id) async {
+    if (id != null) {
+      AuthModel auth = box.read('auth');
+      String token = '';
+      if (auth.accessToken!.isNotEmpty) {
+        token = auth.accessToken!;
+      }
+      var response = await http.post(Uri.parse(baseUrlArquivar),
+          headers: {"Authorization": 'Bearer ' + token},
+          body: {"id": id.toString()});
+
+      if (response.statusCode == 200) {
+        return 1;
+      }else{
+        return 0;
+      }
+    }
+    return 0;
   }
 }

@@ -62,7 +62,23 @@ class _OcorrenciaAuthDialogState extends State<OcorrenciaAuthDialog> {
                 OcorrenciaClient.inserir(ocorrencia);
               }
               if(tipoMessage == 2){
-
+                OcorrenciaClient.arquivar(ocorrenciaArq!).then((value){
+                  if(value == 1){
+                    showDialog(
+                        context: context,
+                        builder: (contextDialog){
+                          return SuccessDialog('Arquivado com Sucesso', tipoImagem: 0, flagAcao: 2,);
+                        }
+                    );
+                  }else{
+                    showDialog(
+                        context: context,
+                        builder: (contextDialog){
+                          return FailureDialog('Erro ao Arquivar');
+                        }
+                    );
+                  }
+                });
               }
             }
           },

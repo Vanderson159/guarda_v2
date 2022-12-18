@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
+import 'package:guardaappv2/data/model/user_model.dart';
 
 class HomeController extends GetxController{
   final box = GetStorage('guardaapp');
+  var auth;
 
   void logOut(){
     box.erase();
@@ -24,9 +26,14 @@ class HomeController extends GetxController{
   }
 
   String username(){
-    AuthModel auth = box.read('auth');
+    auth = box.read('auth');
     String username = auth.user!.username.toString();
     return username;
+  }
+
+  UserModel returnUser(){
+    UserModel user = box.read('userStorage');
+    return user;
   }
 
 }

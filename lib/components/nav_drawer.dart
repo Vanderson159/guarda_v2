@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:guardaappv2/modules/home/home_controller.dart';
 
 class NavDrawer extends StatefulWidget {
@@ -30,52 +31,84 @@ class _NavDrawerState extends State<NavDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        children: [
-          criarListTile(
-            icon: Icons.home,
-            title: 'Home',
-            context: context,
-            acao: () {
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  'tela-principalADM', (Route<dynamic> route) => false);
-            },
-          ),
-          /*
+    if(homeController.returnUser().tipoUser == 1){
+      return Drawer(
+        child: ListView(
+          children: [
             criarListTile(
-              icon: Icons.manage_accounts,
-              title: 'Administração',
+              icon: Icons.home,
+              title: 'Home',
               context: context,
-              tela: TelaPrincipal(),
+              acao: () {
+                Get.offAllNamed('/home');
+              },
             ),
-            */
-          criarListTile(
-            icon: Icons.add_circle,
-            title: 'Nova Ocorrência',
-            context: context,
-            acao: () {
-              Navigator.of(context).pushNamed('tela-addOcorrencia');
-            },
-          ),
-          criarListTile(
-            icon: Icons.search,
-            title: 'Consultar',
-            context: context,
-            acao: () {
-              //Navigator.of(context).pushNamed('tela-resultaddOcorrenciaADM');
-            },
-          ),
-          criarListTile(
-            icon: Icons.exit_to_app,
-            title: 'Sair',
-            context: context,
-            acao: () {
-              homeController.logOut();
-            },
-          ),
-        ],
-      ),
-    );
+            criarListTile(
+              icon: Icons.add_circle,
+              title: 'Nova Ocorrência',
+              context: context,
+              acao: () {
+                Get.offAllNamed('/tela-addOcorrencia');
+              },
+            ),
+            criarListTile(
+              icon: Icons.search,
+              title: 'Consultar',
+              context: context,
+              acao: () {
+                Get.offAllNamed('/tela-resultOcorrenciaADM');
+              },
+            ),
+            criarListTile(
+              icon: Icons.exit_to_app,
+              title: 'Sair',
+              context: context,
+              acao: () {
+                homeController.logOut();
+              },
+            ),
+          ],
+        ),
+      );
+    }else{
+      return Drawer(
+        child: ListView(
+          children: [
+            criarListTile(
+              icon: Icons.home,
+              title: 'Home',
+              context: context,
+              acao: () {
+                Get.offAllNamed('/home');
+              },
+            ),
+            criarListTile(
+              icon: Icons.add_circle,
+              title: 'Nova Ocorrência',
+              context: context,
+              acao: () {
+                Get.offNamed('/tela-addOcorrencia');
+              },
+            ),
+            criarListTile(
+              icon: Icons.search,
+              title: 'Consultar',
+              context: context,
+              acao: () {
+                Get.offNamed('/tela-resultOcorrencia');
+              },
+            ),
+            criarListTile(
+              icon: Icons.exit_to_app,
+              title: 'Sair',
+              context: context,
+              acao: () {
+                homeController.logOut();
+              },
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

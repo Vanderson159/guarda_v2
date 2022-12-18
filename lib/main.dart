@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/routes/app_routes.dart';
 import 'package:guardaappv2/routes/app_pages.dart';
 import 'package:guardaappv2/theme/app_theme.dart';
-//d
+//scrcpy --tcpip=192.168.1.114:5555
 void main() async{
   await GetStorage.init('guardaapp'); // nome para o storage do app
   runApp(
@@ -12,7 +12,7 @@ void main() async{
         title: "Barber App",
         debugShowCheckedModeBanner: false,
         theme: appThemeData,
-        initialRoute: Routes.LOGIN,
+        initialRoute: Routes.INITIAL,
         getPages: AppPages.routes,
         //initialBinding: ,
       )

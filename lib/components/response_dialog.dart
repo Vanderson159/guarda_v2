@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/components/willPopScope.dart';
+import 'package:guardaappv2/data/model/auth_model.dart';
 import 'package:guardaappv2/data/model/user_model.dart';
+import 'package:guardaappv2/routes/app_routes.dart';
 
 class ResponseDialog extends StatelessWidget {
-
+  final box = GetStorage('guardaapp');
   final String title;
   final String message;
   final String buttonText1;
@@ -133,10 +135,15 @@ class ResponseDialog extends StatelessWidget {
             ],
           ),
           actions: <Widget>[
-            ElevatedButton(//nãoooooo
+            ElevatedButton(
               child: Text("OK"),
               onPressed: (){
-
+                AuthModel auth = box.read('auth');
+                if(auth.user!.tipoUser == 1){
+                  Get.offAllNamed(Routes.TELA_RESULT_CORRENCIA_ADM);
+                }else{
+                  Get.offAllNamed(Routes.TELA_RESULT_CORRENCIA);
+                }
               },
             ),
           ],

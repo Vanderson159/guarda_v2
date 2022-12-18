@@ -18,7 +18,7 @@ class HomeView extends GetView<HomeController> {
               size: 40,
             ),
             SizedBox(width: 5),
-            Text(controller.username()),
+            Text(controller.username().toString()),
           ]),
         ),
         body: Column(
