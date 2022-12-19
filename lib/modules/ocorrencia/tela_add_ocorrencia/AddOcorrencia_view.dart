@@ -72,7 +72,7 @@ class AddOcorrenciaView extends GetView<AddOcorrenciaController> {
               size: 40,
             ),
             SizedBox(width: 5),
-            //Text(provider.login)
+            Text(controller.homeController.username())
           ]),
         ),
         body: Center(

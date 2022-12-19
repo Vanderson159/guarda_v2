@@ -3,13 +3,14 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
 import 'package:guardaappv2/data/repository/auth_repository.dart';
+import 'package:guardaappv2/modules/home/home_controller.dart';
 
 class AddOcorrenciaController extends GetxController{
   final repository = Get.find<AuthRepository>(); //pega o auth repository iniciado no bind
   final formKey = GlobalKey<FormState>(); //formkey do formulario de login
   AuthModel? auth;
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
-
+  HomeController homeController = HomeController();
   TextEditingController dataController = TextEditingController();
   TextEditingController timeController = TextEditingController();
   TextEditingController boAtendimentoController = TextEditingController();
