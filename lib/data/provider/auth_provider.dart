@@ -32,7 +32,18 @@ class AuthApiClient {
         print('erro -get: ' + response.body);
       }
     } catch (err) {
-      Get.defaultDialog(title: "Login", content: Text("$err"));
+      Get.defaultDialog(
+          title: "Falha",
+          content: Text(
+              "${err}"),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Get.offAllNamed('/login');
+              },
+              child: Text('OK'),
+            ),
+          ]);
       print(err);
     }
     return json.decode(erro);
