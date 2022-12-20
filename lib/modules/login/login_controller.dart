@@ -26,6 +26,7 @@ class LoginController extends GetxController{
       UserModel? userStorage = auth!.user;
 
       if(!auth.isNull){
+        box.remove('imagem');
         box.write('auth', auth);
         box.write('userStorage', userStorage);
         Get.offAllNamed('/home');

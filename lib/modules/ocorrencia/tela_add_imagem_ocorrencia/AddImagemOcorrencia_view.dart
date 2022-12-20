@@ -75,8 +75,8 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
             Get.offAllNamed('/tela-addImgOcorrencia');
           },
           child: Container(
-            width: 300,
-            height: 300,
+            width: 350,
+            height: 350,
             child: Image.memory(imageBytes),
           ),
         );
@@ -111,9 +111,11 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: imageView(),
+            Center(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: imageView(),
+              ),
             ),
             SizedBox(height: 70,),
             Row(
@@ -121,7 +123,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 8, right: 8),
+                  padding: EdgeInsets.only(right: 8),
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
@@ -158,7 +160,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(left: 8, right: 8),
+                  padding: EdgeInsets.only(left: 8),
                   child: ElevatedButton(
                     onPressed: (){
                       var imagemTemp = controller.resgatarImagem();

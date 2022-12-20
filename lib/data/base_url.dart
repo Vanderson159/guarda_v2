@@ -1,4 +1,4 @@
-const baseHost = 'https://c195-186-251-194-123.sa.ngrok.io/';
+const baseHost = 'https://0138-186-251-194-123.sa.ngrok.io/';
 const baseUrl = '${baseHost}guardaWEBapi/api';
 const baseUrlLogin = '${baseHost}guardaWEBapi/api/login';
 const baseUrlRegister = '${baseHost}guardaWEBapi/api/register';

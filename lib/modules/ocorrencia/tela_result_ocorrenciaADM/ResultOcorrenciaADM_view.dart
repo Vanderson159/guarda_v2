@@ -147,6 +147,9 @@ class _OcorrenciatItemADMState extends State<OcorrenciatItemADM> {
             Padding(
               padding: EdgeInsets.only(right: 5),
               child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade800),
+                ),
                 onPressed: () {
                   if(_pesquisaController.text == ''){
                     alertaFunc('Informe um número para ser pesquisado');

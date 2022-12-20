@@ -65,7 +65,7 @@ class LoginView extends GetView<LoginController> {
                                   onPressed: () => controller.limpar(),
                                   child: Text(
                                     'LIMPAR',
-                                    style: TextStyle(color: Colors.blue),
+                                    style: TextStyle(color: Colors.blue.shade800),
                                   ),
                                   style: ButtonStyle(
                                     backgroundColor:
@@ -108,7 +108,9 @@ class LoginView extends GetView<LoginController> {
                               horizontal: 40,
                             ),
                             onPressed: null,
-                            child: CircularProgressIndicator(),
+                            child: CircularProgressIndicator(
+                              color: Colors.blue.shade800,
+                            ),
                           ),
                         ),
                       ),
