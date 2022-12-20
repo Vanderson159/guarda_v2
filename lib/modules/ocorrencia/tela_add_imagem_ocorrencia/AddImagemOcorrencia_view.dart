@@ -69,10 +69,16 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
       if(controller.resgatarImagem() != null){
         ImagemModel imagemTemp = controller.resgatarImagem();
         var imageBytes = base64Decode(imagemTemp.base64img.toString());
-        return Container(
-          width: 300,
-          height: 300,
-          child: Image.memory(imageBytes),
+        return GestureDetector(
+          onTap: () async{
+            await getImage();
+            Get.offAllNamed('/tela-addImgOcorrencia');
+          },
+          child: Container(
+            width: 300,
+            height: 300,
+            child: Image.memory(imageBytes),
+          ),
         );
       }else{
         return Center(
@@ -133,6 +139,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                                 ElevatedButton(//nãoooooo
                                   child: Text("SIM"),
                                   onPressed: (){
+                                    controller.resetarImagem();
                                     Get.offAllNamed('/home');
                                   },
                                 ),

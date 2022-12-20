@@ -12,6 +12,10 @@ class AddImagemOcorrenciaController extends GetxController{
     box.write('imagem', imagem);
   }
 
+  void resetarImagem(){
+    box.remove('imagem');
+  }
+
   ImagemModel resgatarImagem(){
     ImagemModel imagem = box.read('imagem');
     return imagem;
