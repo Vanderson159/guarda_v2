@@ -140,6 +140,7 @@ class _OcorrenciatItemADMState extends State<OcorrenciatItemADM> {
                   icon: Icon(
                     Icons.search,
                     size: 30,
+                    color: Colors.blue.shade800,
                   ),
                 ),
               ),
@@ -279,7 +280,7 @@ class Progress extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children:[
-            CircularProgressIndicator(),
+            CircularProgressIndicator(color: Colors.blue.shade800,),
             SizedBox(height: 10,),
             Text(message)
           ],

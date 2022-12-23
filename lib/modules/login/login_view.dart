@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:guardaappv2/modules/login/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
-
   @override
   Widget build(BuildContext context) {
     //controller.secureScreen();
@@ -29,7 +28,9 @@ class LoginView extends GetView<LoginController> {
                   TextField(
                     controller: controller.usernameCtrl,
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: 'Usuário'),
+                    decoration: InputDecoration(
+                      labelText: 'Usuário',
+                    ),
                     style: TextStyle(
                       fontSize: 24.0,
                     ),
@@ -42,7 +43,9 @@ class LoginView extends GetView<LoginController> {
                       autocorrect: false,
                       controller: controller.passwordCtrl,
                       textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(labelText: 'Senha'),
+                      decoration: InputDecoration(
+                        labelText: 'Senha',
+                      ),
                       style: TextStyle(
                         fontSize: 24.0,
                       ),
@@ -65,7 +68,8 @@ class LoginView extends GetView<LoginController> {
                                   onPressed: () => controller.limpar(),
                                   child: Text(
                                     'LIMPAR',
-                                    style: TextStyle(color: Colors.blue.shade800),
+                                    style:
+                                        TextStyle(color: Colors.blue.shade800),
                                   ),
                                   style: ButtonStyle(
                                     backgroundColor:
@@ -80,10 +84,6 @@ class LoginView extends GetView<LoginController> {
                                 width: 100,
                                 height: 50,
                                 child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.blue.shade800)),
                                   onPressed: () => controller.login(),
                                   child: Text('LOGIN'),
                                 ),

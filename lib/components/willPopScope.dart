@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/modules/home/home_view.dart';
 
-class WillPopScopeView extends StatefulWidget{
+class WillPopScopeView extends StatefulWidget {
   Widget? view;
   int? tipo;
 
@@ -19,33 +19,47 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
   _WillPopScopeViewState(this.view, this.tipo);
 
   Future<bool?> showConfirmationDialog() {
-    return showDialog(context: context, builder: (context){
-      if(tipo == 3){
-        return AlertDialog(
-          title: const Text('Deseja voltar?'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Não'),),
-            OutlinedButton(onPressed: () {
-                Get.offAllNamed('/home');
-            }, child: const Text('Sim'),),
-          ],
-        );
-      }else{
-        return AlertDialog(
-          title: const Text('Deseja sair sem salvar?'),
-          actions: [
-            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Cancelar'),),
-            OutlinedButton(onPressed: () {
-              if(tipo == 2){
-                Get.offAllNamed('/home');
-              }else{
-                Get.offAllNamed('/home');
-              }
-            }, child: const Text('Sair'),),
-          ],
-        );
-      }
-    });
+    return showDialog(
+        context: context,
+        builder: (context) {
+          if (tipo == 3) {
+            return AlertDialog(
+              title: const Text('Deseja voltar?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text('Não', style: TextStyle(color: Colors.blue.shade800),),
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    Get.offAllNamed('/home');
+                  },
+                  child: Text('Sim', style: TextStyle(color: Colors.blue.shade800),),
+                ),
+              ],
+            );
+          } else {
+            return AlertDialog(
+              title: const Text('Deseja sair sem salvar?'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text('Cancelar', style: TextStyle(color: Colors.blue.shade800),),
+                ),
+                OutlinedButton(
+                  onPressed: () {
+                    if (tipo == 2) {
+                      Get.offAllNamed('/home');
+                    } else {
+                      Get.offAllNamed('/home');
+                    }
+                  },
+                  child: Text('Sair', style: TextStyle(color: Colors.blue.shade800),),
+                ),
+              ],
+            );
+          }
+        });
   }
 
   @override
@@ -53,7 +67,7 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
     return WillPopScope(
       child: view,
       onWillPop: () async {
-        if(!saved){
+        if (!saved) {
           final confirmation = await showConfirmationDialog();
           return confirmation ?? false;
         }
@@ -62,4 +76,3 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
     );
   }
 }
-
