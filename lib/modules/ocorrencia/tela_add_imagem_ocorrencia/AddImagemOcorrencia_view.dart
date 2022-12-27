@@ -43,26 +43,56 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
     }
 
     getImage() async{
-      var image = await ImagePicker.pickImage(
-          source: ImageSource.gallery,
-          imageQuality: 80,
-          maxWidth: 1080,
-          maxHeight: 930
+      return Get.defaultDialog(
+        title: "Tire as fotos na vertical",
+          content: Column(
+            children: [
+              Center(child:Text('Para uma melhor visualização'),),
+              Center(child:Text('das imagens'),),
+
+            ],
+          ),
+        actions: [
+          Center(
+            child: Column(
+              children: [
+                Container(
+                  width: 200,
+                  height: 200,
+                  child: Image(
+                    image: AssetImage('imagens/phone_camera.png'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async{
+              var image = await ImagePicker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 80,
+                  maxWidth: 1080,
+                  maxHeight: 930
+              );
+              _image = image;
+              base64Image = base64Encode(_image!.readAsBytesSync());
+              fileName = _image!.path.split('/').last;
+              ocorrenciaAux.base64img = base64Image;
+              ocorrenciaAux.nomeImg = fileName;
+
+              ImagemModel imagem = ImagemModel();
+
+              imagem.nomeImg = fileName;
+              imagem.image = _image;
+              imagem.base64img = base64Image;
+              imagem.bytes = base64Decode(base64Image);
+              controller.armazenarImagem(imagem);
+              Get.offAllNamed('/tela-addImgOcorrencia');
+            },
+            child: Text('OK'),
+          ),
+        ]
       );
-        _image = image;
-        base64Image = base64Encode(_image!.readAsBytesSync());
-        fileName = _image!.path.split('/').last;
-        ocorrenciaAux.base64img = base64Image;
-        ocorrenciaAux.nomeImg = fileName;
-
-        ImagemModel imagem = ImagemModel();
-
-        imagem.nomeImg = fileName;
-        imagem.image = _image;
-        imagem.base64img = base64Image;
-        imagem.bytes = base64Decode(base64Image);
-        controller.armazenarImagem(imagem);
-      return 1;
     }
 
     Widget imageView(){
@@ -98,7 +128,6 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
     return WillPopScopeView(Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
         title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
           Icon(
             Icons.person,

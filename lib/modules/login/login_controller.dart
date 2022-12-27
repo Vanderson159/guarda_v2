@@ -16,7 +16,7 @@ class LoginController extends GetxController{
   TextEditingController usernameCtrl =  TextEditingController();
   TextEditingController passwordCtrl =  TextEditingController();
 
-  RxBool showPassword = false.obs;
+  RxBool showPassword = true.obs;
   RxBool loading = false.obs;
 
   void login() async{

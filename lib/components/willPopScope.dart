@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:guardaappv2/modules/home/home_view.dart';
+import 'package:guardaappv2/modules/ocorrencia/tela_add_imagem_ocorrencia/AddImagemOcorrencia_controller.dart';
 
 class WillPopScopeView extends StatefulWidget {
   Widget? view;
@@ -51,6 +51,8 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
                     if (tipo == 2) {
                       Get.offAllNamed('/home');
                     } else {
+                      AddImagemOcorrenciaController addImagemOcorrenciaController = AddImagemOcorrenciaController();
+                      addImagemOcorrenciaController.resetarImagem();
                       Get.offAllNamed('/home');
                     }
                   },

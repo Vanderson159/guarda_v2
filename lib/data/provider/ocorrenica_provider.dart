@@ -12,7 +12,7 @@ class OcorrenciaApiClient {
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
   String erro = 'ERRO NO OCORRÊNCIA API CLIENT';
 
-  Future<Map<String, dynamic>> inserir(OcorrenciaModel ocorrencia) async {
+  Future inserir(OcorrenciaModel ocorrencia) async {
     AuthModel auth = box.read('auth');
     String token = '';
     if (auth.accessToken!.isNotEmpty) {
@@ -35,26 +35,7 @@ class OcorrenciaApiClient {
         OcorrenciaModel ocorrenciaModel =
             OcorrenciaModel.fromJson(json.decode(response.body));
         box.write('ocorrencia', ocorrenciaModel);
-
-        Get.defaultDialog(
-            title: "Ocorrência inserida",
-            content: Text(
-                "A ocorrência foi inserida com sucesso, deseja adicionar imagens a ocorrência?"),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Get.offAllNamed('/home');
-                },
-                child: Text('Não'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Get.offAllNamed('/tela-addImgOcorrencia');
-                },
-                child: Text('Sim'),
-              ),
-            ]);
-        return json.decode(response.body);
+        return 1;
       } else {
         Get.defaultDialog(
             title: "Inserção de Ocorrência",

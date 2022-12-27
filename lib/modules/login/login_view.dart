@@ -35,22 +35,31 @@ class LoginView extends GetView<LoginController> {
                       fontSize: 24.0,
                     ),
                   ),
-                  Padding(
+                  Obx(() => Padding(
                     padding: EdgeInsets.only(top: 8.0),
                     child: TextField(
-                      obscureText: true,
+                      obscureText: controller.showPassword.value,
                       enableSuggestions: false,
                       autocorrect: false,
                       controller: controller.passwordCtrl,
                       textInputAction: TextInputAction.done,
                       decoration: InputDecoration(
                         labelText: 'Senha',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.visibility,
+                            color: Get.theme.primaryColor,
+                          ),
+                          onPressed: (){
+                            controller.showPassword.value = !controller.showPassword.value;
+                          },
+                        ),
                       ),
                       style: TextStyle(
                         fontSize: 24.0,
                       ),
                     ),
-                  ),
+                  ),),
                   Obx(
                     () => Visibility(
                       visible: !controller.loading.value,
