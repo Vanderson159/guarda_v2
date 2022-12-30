@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/api_pdf/pdf_api.dart';
+import 'package:guardaappv2/components/ocorrencia_auth_dialog.dart';
 import 'package:guardaappv2/components/response_dialog.dart';
 import 'package:guardaappv2/components/willPopScope.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
@@ -64,191 +65,275 @@ class ResultOcorrenciaView extends GetView<ResultOcorrenciaController> {
   }
 }
 
-class OcorrenciatItem extends StatefulWidget {
+class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
   final OcorrenciaModel ocorrencia;
   final Function onClick;
   final index;
 
   OcorrenciatItem(this.ocorrencia, {required this.onClick, this.index});
-
-  @override
-  State<OcorrenciatItem> createState() => _OcorrenciatItemState();
-}
-
-class _OcorrenciatItemState extends State<OcorrenciatItem> {
   final TextEditingController _pesquisaController = TextEditingController();
 
-  var bytes;
-
-  alertaFunc(String label) {
-    return showDialog(
-        context: context,
-        builder: (contextDialog) {
-          return AlertDialog(
-            title: Text(label),
-            actions: <Widget>[
-              ElevatedButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        });
-  }
-
   String titulo() {
-    String aux = widget.ocorrencia.id.toString();
+    String aux = ocorrencia.id.toString();
     String titulo = 'BO$aux';
     return titulo;
   }
 
   @override
   Widget build(BuildContext context) {
-    ResultOcorrenciaController resultOcorrenciaController = ResultOcorrenciaController();
-    void pdfCall() async {
-      resultOcorrenciaController.imagemApiClient.buscarIdImage(widget.ocorrencia.id).then((value) async{
-        if (value.isEmpty) {
-          final pdfFile = await PdfApi.generatePDF(ocorrenciaAUX: widget.ocorrencia);
-          PdfApi.openFile(pdfFile);
-        } else {
-          resultOcorrenciaController.imagemApiClient.qrCodeInsert(widget.ocorrencia.id).then((value2) async{
-            resultOcorrenciaController.ocorrenciaApiClient.buscarQrcode(widget.ocorrencia.id).then((value3) async{
-              String base64 = value3;
-              final pdfFile = await PdfApi.generatePDF(
-                  ocorrenciaAUX: widget.ocorrencia,
-                  imagens: value,
-                  base64qrcode: base64);
-              PdfApi.openFile(pdfFile);
-            });
+
+    alertaFunc(String label) {
+      return showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return AlertDialog(
+              title: Text(label),
+              actions: <Widget>[
+                ElevatedButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
           });
-        }
-      });
     }
 
-    return widget.index == 0
-        ? Column(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 15, right: 15),
-          child: TextFormField(
-            enabled: true,
-            keyboardType: TextInputType.number,
-            controller: _pesquisaController,
-            style: TextStyle(fontSize: 23),
-            decoration: InputDecoration(
-              hintText: 'Ex: 235',
-              icon: Icon(
-                Icons.search,
-                size: 30,
+    preView() {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Obx(
+                () => Visibility(
+              visible: controller.loadingPdf.value,
+              child: Center(child: Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                width: Get.width * 0.8,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(29),
+                  child: FlatButton(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 40,
+                    ),
+                    onPressed: null,
+                    child: CircularProgressIndicator(
+                      color: Colors.blue.shade800,
+                    ),
+                  ),
+                ),
+              ),),
+            ),
+          ),
+          Obx(
+                () => Visibility(
+              visible: !controller.loadingPdf.value,
+              child: AlertDialog(
+                title: Center(child: Text('Ocorrência: ${ocorrencia.id}')),
+                content: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Data Hora:'),
+                      Text(
+                        ocorrencia.dataHora.toString(),
+                      ),
+                      Text('Endereço:'),
+                      Text(
+                        ocorrencia.endereco.toString(),
+                      ),
+                      Text('Local:'),
+                      Text(
+                        ocorrencia.local.toString(),
+                      ),
+                      Text('Fatos:'),
+                      Text(
+                        ocorrencia.fatos.toString(),
+                      ),
+                      Text('BO Atendimento:'),
+                      Text(
+                        ocorrencia.boletimAtendimento.toString(),
+                      ),
+                      Text('BO Ocorrência:'),
+                      Text(
+                        ocorrencia.boletimOcorrencia.toString(),
+                      ),
+                      Text('Orientação Guarda:'),
+                      Text(
+                        ocorrencia.orientacaoGuarda.toString(),
+                      ),
+                    ],
+                  ),
+                ),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      controller.pdfCall(ocorrencia);
+                    },
+                    child: Text('IMPRIMIR'),
+                  ),
+                ],
               ),
             ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(right: 15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.end,
+        ],
+      );
+    }
+
+    Widget view() {
+      return index == 0
+          ? Column(
+        children: [
+          Column(
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 10),
-                child: Container(
-                  width: 150,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if(_pesquisaController.text == ''){
-                        alertaFunc('Informe um número para ser pesquisado');
-                      }else{
-                        var listOcorrenciaSelect = ocorrencialist!.where((element) => element.id == int.parse(_pesquisaController.text)).toList();
-                        if(listOcorrenciaSelect.length <= 0){
-                          alertaFunc('Ocorrência Inexistente');
-                        }else{
-                          OcorrenciaModel ocorrenciaSelect = OcorrenciaModel(listOcorrenciaSelect[0].id, listOcorrenciaSelect[0].dataHora, listOcorrenciaSelect[0].boletimAtendimento, listOcorrenciaSelect[0].boletimOcorrencia, listOcorrenciaSelect[0].endereco, listOcorrenciaSelect[0].local, listOcorrenciaSelect[0].fatos, listOcorrenciaSelect[0].orientacaoGuarda);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ConsultOcorrenciaView(ocorrenciaSelect),),
-                          );
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      enabled: true,
+                      controller: _pesquisaController,
+                      style: TextStyle(fontSize: 23),
+                      decoration: InputDecoration(
+                        hintText: 'Ex: 235',
+                        icon: Icon(
+                          Icons.search,
+                          size: 30,
+                          color: Colors.blue.shade800,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 5),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Colors.blue.shade800),
+                      ),
+                      onPressed: () {
+                        if (_pesquisaController.text == '') {
+                          alertaFunc(
+                              'Informe um número para ser pesquisado');
+                        } else {
+                          var listOcorrenciaSelect = ocorrencialist!
+                              .where((element) =>
+                          element.id ==
+                              int.parse(_pesquisaController.text))
+                              .toList();
+                          if (listOcorrenciaSelect.length <= 0) {
+                            alertaFunc('Ocorrência Inexistente');
+                          } else {
+                            OcorrenciaModel ocorrenciaSelect =
+                            OcorrenciaModel(
+                                listOcorrenciaSelect[0].id,
+                                listOcorrenciaSelect[0].dataHora,
+                                listOcorrenciaSelect[0]
+                                    .boletimAtendimento,
+                                listOcorrenciaSelect[0]
+                                    .boletimOcorrencia,
+                                listOcorrenciaSelect[0].endereco,
+                                listOcorrenciaSelect[0].local,
+                                listOcorrenciaSelect[0].fatos,
+                                listOcorrenciaSelect[0]
+                                    .orientacaoGuarda);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ConsultOcorrenciaView(
+                                        ocorrenciaSelect),
+                              ),
+                            );
+                          }
                         }
-                      }
-                    },
-                    child: Text('Pesquisar'),
+                      },
+                      child: Text('Pesquisar'),
+                    ),
+                  ),
+                ],
+              ),
+              Card(
+                child: ListTile(
+                  trailing: Wrap(
+                    spacing: 12, // space between two icons
+                    children: <Widget>[
+                      IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (contextDialog) {
+                                return preView();
+                              });
+                        },
+                        icon: Icon(Icons.visibility),
+                      ),
+                    ],
+                  ),
+                  onTap: () => onClick(),
+                  title: Text(
+                    titulo(),
+                    // ignore: prefer_const_constructors
+                    style: TextStyle(
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  subtitle: Text(
+                    ocorrencia.dataHora.toString(),
+                    // ignore: prefer_const_constructors
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-        ),
-        Card(
-          child: ListTile(
-            trailing: Wrap(
-              spacing: 12, // space between two icons
-              children: <Widget>[
-                IconButton(
-                  onPressed: () {
-                    pdfCall();
-                  },
-                  icon: Icon(Icons.picture_as_pdf),
+        ],
+      )
+          : Column(
+        children: [
+          Card(
+            child: ListTile(
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) {
+                            return preView();
+                          });
+                    },
+                    icon: Icon(Icons.visibility),
+                  ),
+                ],
+              ),
+              onTap: () => onClick(),
+              title: Text(
+                titulo(),
+                // ignore: prefer_const_constructors
+                style: TextStyle(
+                  fontSize: 24.0,
                 ),
-              ],
-            ),
-            onTap: () => widget.onClick(
-              //pdfCall(),
-            ),
-            title: Text(
-              titulo(),
-              // ignore: prefer_const_constructors
-              style: TextStyle(
-                fontSize: 24.0,
               ),
-            ),
-            subtitle: Text(
-              widget.ocorrencia.dataHora.toString(),
-              // ignore: prefer_const_constructors
-              style: TextStyle(
-                fontSize: 16.0,
+              subtitle: Text(
+                ocorrencia.dataHora.toString(),
+                // ignore: prefer_const_constructors
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
               ),
             ),
           ),
-        )
-      ],
-    )
-        : Card(
-      child: ListTile(
-        //trailing: const Icon(Icons.picture_as_pdf),
-        // trailing: Row(children: [Icon(Icons.remove), Icon(Icons.picture_as_pdf)]),
-        trailing: Wrap(
-          spacing: 12, // space between two icons
-          children: <Widget>[
-            IconButton(
-              onPressed: () {
-                pdfCall();
-              },
-              icon: Icon(Icons.picture_as_pdf),
-            ), // icon-1
-          ],
-        ),
-        onTap: () => widget.onClick(
-          pdfCall(),
-        ),
-        title: Text(
-          titulo(),
-          // ignore: prefer_const_constructors
-          style: TextStyle(
-            fontSize: 24.0,
-          ),
-        ),
-        subtitle: Text(
-          widget.ocorrencia.dataHora.toString(),
-          // ignore: prefer_const_constructors
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
-        ),
-      ),
-    );
+        ],
+      );
+    }
+
+    return view();
   }
 }
 

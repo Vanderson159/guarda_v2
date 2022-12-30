@@ -180,7 +180,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                     },
                     child: Text(
                       'Finalizar',
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.blue.shade800),
                     ),
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(140,50),),
@@ -209,7 +209,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                     },
                     child: Text(
                       'Enviar Imagem',
-                      style: TextStyle(color: Colors.blue),
+                      style: TextStyle(color: Colors.blue.shade800),
                     ),
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(140,50),),

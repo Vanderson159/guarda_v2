@@ -38,7 +38,7 @@ class LoginView extends GetView<LoginController> {
                   Obx(() => Padding(
                     padding: EdgeInsets.only(top: 8.0),
                     child: TextField(
-                      obscureText: controller.showPassword.value,
+                      obscureText: !controller.showPassword.value,
                       enableSuggestions: false,
                       autocorrect: false,
                       controller: controller.passwordCtrl,
@@ -47,7 +47,7 @@ class LoginView extends GetView<LoginController> {
                         labelText: 'Senha',
                         suffixIcon: IconButton(
                           icon: Icon(
-                            Icons.visibility,
+                            controller.showPassword.value ? Icons.visibility : Icons.visibility_off,
                             color: Get.theme.primaryColor,
                           ),
                           onPressed: (){
