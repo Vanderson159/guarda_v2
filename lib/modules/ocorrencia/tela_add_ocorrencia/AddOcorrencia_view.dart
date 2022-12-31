@@ -225,6 +225,7 @@ class AddOcorrenciaView extends GetView<AddOcorrenciaController> {
                                   ]);
                             } else {
                               showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (contextDialog) {
                                     return OcorrenciaAuthDialog(

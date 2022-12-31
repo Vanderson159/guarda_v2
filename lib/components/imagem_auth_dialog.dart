@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/components/response_dialog.dart';
 import 'package:guardaappv2/data/model/imagem_model.dart';
@@ -19,6 +21,7 @@ class _ImagemAuthDialog2State extends State<ImagemAuthDialog2> {
   final ImagemModel imagem;
   final ImagemApiClient ImagemApi = ImagemApiClient();
   _ImagemAuthDialog2State(this.imagem);
+  RxBool loading = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +41,16 @@ class _ImagemAuthDialog2State extends State<ImagemAuthDialog2> {
         ),
         TextButton(
           onPressed: () {
+            showDialog(barrierDismissible: false, context: context, builder: (contextDialog){
+              return Obx(() => Visibility(visible: loading.value, child: Center(child: Container(height: 20, width: 20, child: CircularProgressIndicator(),),),),);
+            });
             imagem.ocorrenciaId = idLast!;
 
             ImagemApi.inserirImagem(imagem, idLast).then((value){
+              loading.value = false;
               if (value == 1) {
                 showDialog(
+                    barrierDismissible: false,
                     context: context,
                     builder: (contextDialog) {
                       return SuccessDialog(

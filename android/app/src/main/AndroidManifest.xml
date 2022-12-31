@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.guardaappv2">
    <application
-        android:label="guardaappv2"
+        android:label="Guarda Municipal"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

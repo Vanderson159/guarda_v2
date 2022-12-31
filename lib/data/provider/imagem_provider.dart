@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/base_url.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
@@ -27,8 +25,7 @@ class ImagemApiClient {
         "nomeImg": imagem.nomeImg.toString(),
         "base64img": imagem.base64img.toString(),
       });
-      print("STATUS CODE");
-      print(response.statusCode);
+
       if (response.statusCode == 200) {
         return 1;
       } else {

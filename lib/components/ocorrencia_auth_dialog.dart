@@ -65,6 +65,7 @@ class _OcorrenciaAuthDialogState extends State<OcorrenciaAuthDialog> {
                 OcorrenciaClient.inserir(ocorrencia).then((value) {
                   if(value == 1){
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (contextDialog) {
                         return AlertDialog(
@@ -112,6 +113,7 @@ class _OcorrenciaAuthDialogState extends State<OcorrenciaAuthDialog> {
                     );
                   }else{
                     showDialog(
+                      barrierDismissible: false,
                       context: context,
                       builder: (contextDialog) {
                         return AlertDialog(
@@ -152,6 +154,7 @@ class _OcorrenciaAuthDialogState extends State<OcorrenciaAuthDialog> {
                 OcorrenciaClient.arquivar(ocorrenciaArq!).then((value) {
                   if (value == 1) {
                     showDialog(
+                        barrierDismissible: false,
                         context: context,
                         builder: (contextDialog) {
                           return SuccessDialog(
@@ -162,6 +165,7 @@ class _OcorrenciaAuthDialogState extends State<OcorrenciaAuthDialog> {
                         });
                   } else {
                     showDialog(
+                        barrierDismissible: false,
                         context: context,
                         builder: (contextDialog) {
                           return FailureDialog('Erro ao Arquivar');

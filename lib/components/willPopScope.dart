@@ -20,6 +20,7 @@ class _WillPopScopeViewState extends State<WillPopScopeView> {
 
   Future<bool?> showConfirmationDialog() {
     return showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (context) {
           if (tipo == 3) {

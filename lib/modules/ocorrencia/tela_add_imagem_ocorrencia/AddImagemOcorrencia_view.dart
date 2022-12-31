@@ -30,7 +30,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
   Widget build(BuildContext context) {
 
     Future<bool?> showConfirmationDialogImage() {
-      return showDialog(context: context, builder: (context){
+      return showDialog(barrierDismissible: false, context: context, builder: (context){
         return AlertDialog(
           title: const Text('Nenhuma imagem selecionada para ser enviada'),
           actions: [
@@ -156,6 +156,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                   child: ElevatedButton(
                     onPressed: () {
                       showDialog(
+                          barrierDismissible: false,
                           context: context,
                           builder: (contextDialog){
                             return AlertDialog(
@@ -198,6 +199,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                       }else{
                         if(imagemTemp.nomeImg != null && imagemTemp.base64img != null){
                           showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (contextDialog) {
                                 return ImagemAuthDialog2(imagem: imagemTemp,);

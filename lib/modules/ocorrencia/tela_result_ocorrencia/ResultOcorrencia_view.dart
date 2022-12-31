@@ -84,6 +84,7 @@ class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
 
     alertaFunc(String label) {
       return showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (contextDialog) {
             return AlertDialog(
