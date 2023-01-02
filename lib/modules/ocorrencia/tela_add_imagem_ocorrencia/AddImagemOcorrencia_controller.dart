@@ -7,6 +7,18 @@ class AddImagemOcorrenciaController extends GetxController{
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
 
 
+  int tutorialGet(){
+    int tutorial = box.read('tutorial');
+    return tutorial;
+  }
+
+  void tutorialVisto(){
+    box.write('tutorial', 1);
+  }
+
+  void tutorialReset(){
+    box.write('tutorial', 0);
+  }
 
   void armazenarImagem(ImagemModel imagem){
     box.write('imagem', imagem);

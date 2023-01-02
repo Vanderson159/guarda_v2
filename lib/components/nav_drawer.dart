@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/modules/home/home_controller.dart';
+import 'package:guardaappv2/modules/ocorrencia/tela_add_imagem_ocorrencia/AddImagemOcorrencia_controller.dart';
 
 class NavDrawer extends StatefulWidget {
   @override
@@ -28,6 +29,7 @@ class _NavDrawerState extends State<NavDrawer> {
   }
 
   HomeController homeController = HomeController();
+  AddImagemOcorrenciaController addImagemOcorrenciaController = AddImagemOcorrenciaController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class _NavDrawerState extends State<NavDrawer> {
               title: 'Sair',
               context: context,
               acao: () {
+                addImagemOcorrenciaController.tutorialReset();
                 homeController.logOut();
               },
             ),
@@ -103,6 +106,7 @@ class _NavDrawerState extends State<NavDrawer> {
               title: 'Sair',
               context: context,
               acao: () {
+                addImagemOcorrenciaController.tutorialReset();
                 homeController.logOut();
               },
             ),
