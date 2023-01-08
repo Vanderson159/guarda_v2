@@ -9,23 +9,21 @@ class ImagemApiClient {
   final http.Client httpClient = http.Client();
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
   String erro = 'ERRO NO QRCODE API CLIENT';
-
-  Future<int> inserirImagem(ImagemModel imagem, int idOcorrencia) async {
+  
+  Future<int> inserirImagem(List<ImagemModel> imagem, int idOcorrencia) async {
     AuthModel auth = box.read('auth');
     String token = '';
     if (auth.accessToken!.isNotEmpty) {
       token = auth.accessToken!;
     }
     try {
-
       var response = await http.post(Uri.parse(baseUrlImagem), headers: {
         "Authorization": 'Bearer ' + token
       }, body: {
         "ocorrencia_id": idOcorrencia.toString(),
-        "nomeImg": imagem.nomeImg.toString(),
-        "base64img": imagem.base64img.toString(),
+        "listImg": ImagemModel.listToJson(imagem).toString(),
+        "numeroImages": imagem.length.toString(),
       });
-
       if (response.statusCode == 200) {
         return 1;
       } else {

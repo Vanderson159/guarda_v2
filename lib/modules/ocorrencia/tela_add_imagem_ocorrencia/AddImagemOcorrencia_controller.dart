@@ -20,7 +20,7 @@ class AddImagemOcorrenciaController extends GetxController{
     box.write('tutorial', 0);
   }
 
-  void armazenarImagem(ImagemModel imagem){
+  void armazenarImagem(List<ImagemModel> imagem){
     box.write('imagem', imagem);
   }
 
@@ -28,8 +28,8 @@ class AddImagemOcorrenciaController extends GetxController{
     box.remove('imagem');
   }
 
-  ImagemModel resgatarImagem(){
-    ImagemModel imagem = box.read('imagem');
+  List<ImagemModel> resgatarImagem(){
+    List<ImagemModel> imagem = box.read('imagem');
     return imagem;
   }
 

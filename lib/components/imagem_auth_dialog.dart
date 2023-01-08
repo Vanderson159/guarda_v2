@@ -9,7 +9,7 @@ import 'package:guardaappv2/data/provider/imagem_provider.dart';
 
 
 class ImagemAuthDialog2 extends StatefulWidget {
-  final ImagemModel imagem;
+  final List<ImagemModel> imagem;
 
   ImagemAuthDialog2({required this.imagem});
 
@@ -18,7 +18,7 @@ class ImagemAuthDialog2 extends StatefulWidget {
 }
 
 class _ImagemAuthDialog2State extends State<ImagemAuthDialog2> {
-  final ImagemModel imagem;
+  final List<ImagemModel> imagem;
   final ImagemApiClient ImagemApi = ImagemApiClient();
   _ImagemAuthDialog2State(this.imagem);
   RxBool loading = true.obs;
@@ -44,9 +44,9 @@ class _ImagemAuthDialog2State extends State<ImagemAuthDialog2> {
             showDialog(barrierDismissible: false, context: context, builder: (contextDialog){
               return Obx(() => Visibility(visible: loading.value, child: Center(child: Container(height: 20, width: 20, child: CircularProgressIndicator(),),),),);
             });
-            imagem.ocorrenciaId = idLast!;
 
-            ImagemApi.inserirImagem(imagem, idLast).then((value){
+
+            ImagemApi.inserirImagem(imagem, idLast!).then((value){
               loading.value = false;
               if (value == 1) {
                 showDialog(

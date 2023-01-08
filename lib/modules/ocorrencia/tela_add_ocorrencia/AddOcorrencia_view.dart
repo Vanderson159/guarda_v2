@@ -33,19 +33,6 @@ class AddOcorrenciaView extends GetView<AddOcorrenciaController> {
     return String.fromCharCodes(uint8list);
   }
 
-  getImage() async {
-    var image = await ImagePicker.pickImage(
-      source: ImageSource.gallery,
-      imageQuality: 90,
-    );
-
-    _image = image;
-    base64Image = base64Encode(_image!.readAsBytesSync());
-    fileName = _image!.path.split('/').last;
-    ocorrenciaAux.base64img = base64Image;
-    ocorrenciaAux.nomeImg = fileName;
-  }
-
   double fontSizeForm = 23;
   String minuto = '';
 

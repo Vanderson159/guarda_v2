@@ -23,13 +23,14 @@ dependencies:
   http: ^0.13.0
   get_storage: ^2.0.3
   get:
-  image_picker: ^0.6.0
+  image_picker: ^0.8.6
   # create pdf document
   pdf: ^3.1.0
   # open pdf document
   open_file: ^3.1.0
   splashscreen: ^1.2.0
   flutter_windowmanager: ^0.2.0
+  carousel_pro: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

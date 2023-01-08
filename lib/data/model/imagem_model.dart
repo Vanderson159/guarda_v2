@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 class ImagemModel {
   int? id;
   int? ocorrenciaId;
@@ -5,6 +8,7 @@ class ImagemModel {
   String? base64img;
   var bytes;
   var image;
+  var imageFilePath;
 
   ImagemModel({this.id, this.ocorrenciaId, this.nomeImg, this.base64img});
 
@@ -22,5 +26,18 @@ class ImagemModel {
     data['nomeImg'] = this.nomeImg;
     data['base64img'] = this.base64img;
     return data;
+  }
+
+
+  //lista de img para json
+  static listToJson(List<ImagemModel> list){
+    var imagensMap = list.map((e){
+      return{
+        "nomeImg" : e.nomeImg.toString(),
+        "base64img" : e.base64img.toString(),
+      };
+    }).toList();
+    String imagensString = jsonEncode(imagensMap);
+    return imagensString;
   }
 }
