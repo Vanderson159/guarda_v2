@@ -113,14 +113,14 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                     temp = listImagens + controller.resgatarImagem();
                     controller.armazenarImagem(temp);
                   }
+                  controller.tutorialVisto();
                   Get.offAllNamed('/tela-addImgOcorrencia');
                 },
                 child: Text('OK'),
               ),
             ]);
       } else {
-        List<XFile>? images = await _picker.pickMultiImage(
-            imageQuality: 80, maxWidth: 1080, maxHeight: 930);
+        List<XFile>? images = await _picker.pickMultiImage(imageQuality: 80, maxWidth: 1080, maxHeight: 930);
 
         List<File> fileImg = xfileToFile(images);
 
