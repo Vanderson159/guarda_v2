@@ -35,4 +35,16 @@ class ResultOcorrenciaController extends GetxController{
       }
     });
   }
+
+  String convertDataTime(String dataHora){
+    String data = dataHora;
+    var datetime = data.split(' ');
+    var dateUSA = datetime[0].split('-');
+    String ano = dateUSA[0];
+    String mes = dateUSA[1];
+    String dia = dateUSA[2];
+    String time = datetime[1];
+    String dateBR = "$dia-$mes-$ano $time";
+    return dateBR;
+  }
 }

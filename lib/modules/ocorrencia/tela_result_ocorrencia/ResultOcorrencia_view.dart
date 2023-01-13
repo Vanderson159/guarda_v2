@@ -139,7 +139,7 @@ class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
                     children: [
                       Text('Data Hora:'),
                       Text(
-                        ocorrencia.dataHora.toString(),
+                        controller.convertDataTime(ocorrencia.dataHora.toString()),
                       ),
                       Text('Endereço:'),
                       Text(
@@ -282,7 +282,7 @@ class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
                     ),
                   ),
                   subtitle: Text(
-                    ocorrencia.dataHora.toString(),
+                    controller.convertDataTime(ocorrencia.dataHora.toString()),
                     // ignore: prefer_const_constructors
                     style: TextStyle(
                       fontSize: 16.0,
@@ -322,7 +322,7 @@ class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
                 ),
               ),
               subtitle: Text(
-                ocorrencia.dataHora.toString(),
+                controller.convertDataTime(ocorrencia.dataHora.toString()),
                 // ignore: prefer_const_constructors
                 style: TextStyle(
                   fontSize: 16.0,

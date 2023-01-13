@@ -139,7 +139,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
                     children: [
                       Text('Data Hora:'),
                       Text(
-                        ocorrencia.dataHora.toString(),
+                        controller.convertDataTime(ocorrencia.dataHora.toString()),
                       ),
                       Text('Endereço:'),
                       Text(
@@ -295,7 +295,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
                           ),
                         ),
                         subtitle: Text(
-                          ocorrencia.dataHora.toString(),
+                          controller.convertDataTime(ocorrencia.dataHora.toString()),
                           // ignore: prefer_const_constructors
                           style: TextStyle(
                             fontSize: 16.0,
@@ -348,7 +348,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
                       ),
                     ),
                     subtitle: Text(
-                      ocorrencia.dataHora.toString(),
+                      controller.convertDataTime(ocorrencia.dataHora.toString()),
                       // ignore: prefer_const_constructors
                       style: TextStyle(
                         fontSize: 16.0,

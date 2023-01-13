@@ -182,11 +182,10 @@ class AddOcorrenciaView extends GetView<AddOcorrenciaController> {
                         SizedBox(width: 10),
                         ElevatedButton(
                           onPressed: () {
-                            OcorrenciaModel ocorrenciaSend =
-                                OcorrenciaModel.tempOcorrencia();
-                            String data = controller.dataController.text;
-                            String time = controller.timeController.text;
-                            ocorrenciaSend.dataHora = '$data  $time';
+                            OcorrenciaModel ocorrenciaSend = OcorrenciaModel.tempOcorrencia();
+                            String? data = controller.dataBD;
+                            String? time = controller.timeDB;
+                            ocorrenciaSend.dataHora = '$data $time';
                             ocorrenciaSend.boletimAtendimento =
                                 controller.boAtendimentoController.text;
                             ocorrenciaSend.boletimOcorrencia =

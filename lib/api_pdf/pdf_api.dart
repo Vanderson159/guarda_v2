@@ -17,14 +17,27 @@ class PdfApi {
 
   static Future<File> generatePDF({OcorrenciaModel? ocorrenciaAUX, GuardaModel? guardaAUX, List<dynamic>? imagens = null, String? base64qrcode}) async {
     final pdf = Document();
-    String titulo = '';
+    String titulo = ' ';
 
+    
+    String convertDataTime(String dataHora){
+      String data = dataHora;
+      var datetime = data.split(' ');
+      var dateUSA = datetime[0].split('-');
+      String ano = dateUSA[0];
+      String mes = dateUSA[1];
+      String dia = dateUSA[2];
+      String time = datetime[1];
+      String dateBR = "$dia-$mes-$ano $time";
+      return dateBR;
+    }
+    
 
     if (ocorrenciaAUX != null) {
 
       final String id = ocorrenciaAUX.id.toString();
       titulo = 'BO$id';
-      final String dataHora = ocorrenciaAUX.dataHora.toString();
+      final String dataHora = convertDataTime(ocorrenciaAUX.dataHora.toString());
       final String boletimAtendimento = ocorrenciaAUX.boletimAtendimento.toString();
       final String boletimOcorrencia = ocorrenciaAUX.boletimOcorrencia.toString();
       final String endereco = ocorrenciaAUX.endereco.toString();

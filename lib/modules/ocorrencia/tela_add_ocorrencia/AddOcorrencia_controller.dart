@@ -19,6 +19,8 @@ class AddOcorrenciaController extends GetxController{
   TextEditingController local = TextEditingController();
   TextEditingController dosfatos = TextEditingController();
   TextEditingController orientacaoGuarda = TextEditingController();
+  String? timeDB; // padroes do banco de dados
+  String? dataBD; // padroes do banco de dados
 
   RxBool showPassword = false.obs;
   RxBool loading = false.obs;
@@ -68,12 +70,14 @@ class AddOcorrenciaController extends GetxController{
       mes = aux.toString();
     }
 
+    dataBD = '$ano-$mes-$dia';
     dataController.text = '$dia/$mes/$ano';
   }
   void horaAtual(){
     DateTime dataTempo = DateTime.now();
     late String hora;
     late String minuto;
+    late String segundos;
 
     if(dataTempo.hour <= 9){
       int aux = dataTempo.hour;
@@ -89,8 +93,15 @@ class AddOcorrenciaController extends GetxController{
       int aux = dataTempo.minute;
       minuto = aux.toString();
     }
-
-    timeController.text = '$hora:$minuto';
+    if(dataTempo.second <= 9){
+      int aux = dataTempo.second;
+      segundos = '0$aux';
+    }else{
+      int aux = dataTempo.second;
+      segundos = aux.toString();
+    }
+    timeDB = '$hora:$minuto:$segundos';
+    timeController.text = '$hora:$minuto:$segundos';
   }
   void limpar(){
     boAtendimentoController.text = '';
