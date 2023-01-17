@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/components/imagem_auth_dialog.dart';
 import 'package:guardaappv2/components/nav_drawer.dart';
@@ -25,6 +26,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
   String textoExm = "TEXTOOO";
   int flag = 0;
   List<ImagemModel> listImagens = [];
+
 
   @override
   Widget build(BuildContext context) {
@@ -199,8 +201,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
     }
 
     Widget imageView() {
-      if (controller.resgatarImagem() != null &&
-          controller.resgatarImagem().length > 0) {
+      if (controller.resgatarImagem() != null && controller.resgatarImagem().length > 0) {
         List<ImagemModel> listImagemTemp = controller.resgatarImagem();
         List<Uint8List> listBytes = imagesBytes(listImagemTemp);
 
@@ -225,8 +226,78 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
       }
     }
 
+    int? idOcorrenciaAtual = controller.idOcorrenciaAtual();
     return WillPopScopeView(
         Scaffold(
+          floatingActionButton: SpeedDial(
+            backgroundColor: Colors.blue.shade800,
+            animatedIcon: AnimatedIcons.menu_close,
+            children: [
+              SpeedDialChild(
+                child: Icon(Icons.add_a_photo),
+                label: 'Selecionar Imagens',
+                onTap: (){
+                  getImage();
+                }
+              ),
+              SpeedDialChild(
+                  child: Icon(Icons.save),
+                  label: 'Salvar Imagens',
+                  onTap: (){
+                    List<ImagemModel> imagemTemp =
+                    controller.resgatarImagem();
+                    if (imagemTemp.isNull) {
+                      showConfirmationDialogImage();
+                    } else {
+                      if (controller.resgatarImagem() != null) {
+                        showDialog(
+                            barrierDismissible: false,
+                            context: context,
+                            builder: (contextDialog) {
+                              return ImagemAuthDialog2(
+                                imagem: imagemTemp,
+                              );
+                            });
+                      } else {
+                        showConfirmationDialogImage();
+                      }
+                    }
+                  }
+              ),
+              SpeedDialChild(
+                  child: Icon(Icons.done),
+                  label: 'Finalizar',
+                  onTap: (){
+                    showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (contextDialog) {
+                          return AlertDialog(
+                            title: Text(
+                                'Deseja Finalizar a Inserção de Imagens?'),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                //nãoooooo
+                                child: Text("NÂO"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              ElevatedButton(
+                                //nãoooooo
+                                child: Text("SIM"),
+                                onPressed: () {
+                                  controller.resetarImagem();
+                                  Get.offAllNamed('/home');
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  }
+              ),
+            ],
+          ),
           drawer: drawer,
           appBar: AppBar(
             title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -242,114 +313,13 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: imageView(),
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: () async {
-                   getImage();
-                  },
-                  child: Text(
-                    "Adicionar Imagem",
-                    style: TextStyle(color: Colors.green),
-                  ),
-                  style: ButtonStyle(
-                    minimumSize: MaterialStateProperty.all(
-                      Size(140, 50),
-                    ),
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                  ),
-                ),
-                SizedBox(height: 10,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Column(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                              barrierDismissible: false,
-                              context: context,
-                              builder: (contextDialog) {
-                                return AlertDialog(
-                                  title: Text(
-                                      'Deseja Finalizar a Inserção de Imagens?'),
-                                  actions: <Widget>[
-                                    ElevatedButton(
-                                      //nãoooooo
-                                      child: Text("NÂO"),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                    ElevatedButton(
-                                      //nãoooooo
-                                      child: Text("SIM"),
-                                      onPressed: () {
-                                        controller.resetarImagem();
-                                        Get.offAllNamed('/home');
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                        },
-                        child: Text(
-                          'Finalizar',
-                          style: TextStyle(color: Colors.blue.shade800),
-                        ),
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(
-                            Size(140, 50),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 8),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          List<ImagemModel> imagemTemp =
-                              controller.resgatarImagem();
-                          if (imagemTemp.isNull) {
-                            showConfirmationDialogImage();
-                          } else {
-                            if (controller.resgatarImagem() != null) {
-                              showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (contextDialog) {
-                                    return ImagemAuthDialog2(
-                                      imagem: imagemTemp,
-                                    );
-                                  });
-                            } else {
-                              showConfirmationDialogImage();
-                            }
-                          }
-                        },
-                        child: Text(
-                          'Enviar Imagem',
-                          style: TextStyle(color: Colors.blue.shade800),
-                        ),
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(
-                            Size(140, 50),
-                          ),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.white),
-                        ),
-                      ),
+                    Text("Ocorrência: $idOcorrenciaAtual", style: TextStyle(
+                        fontSize: 20
+                    ),),
+                    Center(
+                      child: imageView(),
                     ),
                   ],
                 ),
