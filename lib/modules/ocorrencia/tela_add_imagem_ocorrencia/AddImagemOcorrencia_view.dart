@@ -61,14 +61,14 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
     getImage() async {
       if (controller.tutorialGet() == null || controller.tutorialGet() == 0) {
         return Get.defaultDialog(
-            title: "Tire as fotos na vertical",
+            title: "AVISO",
             content: Column(
               children: [
                 Center(
                   child: Text('Para uma melhor visualização'),
                 ),
                 Center(
-                  child: Text('das imagens'),
+                  child: Text('das imagens, recomendamos que as fotos sejam capturadas na vertical.'),
                 ),
               ],
             ),
@@ -214,7 +214,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
         return Container(
           alignment: Alignment.center,
           width: 350,
-          height: 350,
+          height: 450,
           child: Center(
             child: Icon(
               Icons.add_photo_alternate,

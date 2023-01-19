@@ -32,6 +32,9 @@ dependencies:
   flutter_windowmanager: ^0.2.0
   carousel_pro: ^1.0.0
   flutter_speed_dial: ^4.3.0
+  geolocator: ^7.0.0
+  geocoding: ^2.0.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -41,6 +41,7 @@ class AddOcorrenciaView extends GetView<AddOcorrenciaController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.pegarEndereco();
     controller.dataAtual();
     controller.horaAtual();
 

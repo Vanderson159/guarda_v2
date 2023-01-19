@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
@@ -47,7 +49,6 @@ class AddOcorrenciaController extends GetxController{
 
     return '';
   }
-
 
   void dataAtual(){
     DateTime dataTempo = DateTime.now();
@@ -114,6 +115,18 @@ class AddOcorrenciaController extends GetxController{
   int? guardaId(){
       auth = box.read('auth');
       return auth?.user!.guarda_id;
+  }
+
+  pegarEndereco() async{
+    Position posicao = await Geolocator.getCurrentPosition();
+    List<Placemark> locais = await placemarkFromCoordinates(posicao.latitude, posicao.longitude);
+    if(locais != null){
+      String rua = locais[0].thoroughfare.toString();
+      String bairro = locais[0].subLocality.toString();
+      String cidade = locais[0].subAdministrativeArea.toString();
+      String ender = '$rua, $bairro, $cidade';
+      endereco.text = ender;
+    }
   }
 
 
