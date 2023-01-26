@@ -111,14 +111,16 @@ class LoginView extends GetView<LoginController> {
                         width: Get.width * 0.8,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(29),
-                          child: FlatButton(
-                            padding: EdgeInsets.symmetric(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 20,
                               horizontal: 40,
                             ),
-                            onPressed: null,
-                            child: CircularProgressIndicator(
-                              color: Colors.blue.shade800,
+                            child: ElevatedButton(
+                              onPressed: null,
+                              child: CircularProgressIndicator(
+                                color: Colors.blue.shade800,
+                              ),
                             ),
                           ),
                         ),
