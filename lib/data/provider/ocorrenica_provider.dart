@@ -41,14 +41,12 @@ class OcorrenciaApiClient {
             title: "Inserção de Ocorrência",
             content: Text(
                 "${jsonDecode(response.body)['error']} : Falha ao Inserir"));
-        print('erro -get: ' + response.body);
       }
     } catch (err) {
       Get.defaultDialog(
         title: "Erro na Inserção de Ocorrência",
         content: Text("$err"),
       );
-      print(err);
     }
     return json.decode(erro);
   }
@@ -87,12 +85,12 @@ class OcorrenciaApiClient {
         Get.defaultDialog(
             title: "Erro ao listar ocorrências",
             content: Text(
-                "${jsonDecode(response.body)['error']} : Falha ao Inserir"));
+                "${jsonDecode(response.body)['error']} : Falha ao listar"));
         print('erro -get: ' + response.body);
       }
     } catch (err) {
       Get.defaultDialog(
-        title: "Erro na Inserção de Ocorrência",
+        title: "Erro na listagem das Ocorrências",
         content: Text("$err"),
       );
       print(err);

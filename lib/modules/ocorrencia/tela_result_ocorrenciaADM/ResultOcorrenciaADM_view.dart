@@ -46,8 +46,7 @@ class ResultOcorrenciaADMView extends GetView<ResultOcorrenciaADMController> {
                   } else {
                     return ListView.builder(
                       itemBuilder: (context, index) {
-                        final OcorrenciaModel ocorrencia =
-                            ocorrencialist![index];
+                        final OcorrenciaModel ocorrencia = ocorrencialist![index];
                         return OcorrenciatItemADM(
                           ocorrencia,
                           onClick: () {},

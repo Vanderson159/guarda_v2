@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/data/base_url.dart';
-import 'package:guardaappv2/modules/login/login_controller.dart';
 import 'package:http/http.dart' as http;
 
 class AuthApiClient {
