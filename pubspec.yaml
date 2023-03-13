@@ -28,12 +28,13 @@ dependencies:
   pdf: ^3.1.0
   # open pdf document
   open_file: ^3.1.0
-  splashscreen: ^1.2.0
+  splashscreen:
   flutter_windowmanager: ^0.2.0
   carousel_pro: ^1.0.0
   flutter_speed_dial: ^4.3.0
   geolocator: ^7.0.0
   geocoding: ^2.0.5
+  easy_splash_screen: ^1.0.4
 
 dev_dependencies:
   flutter_test:
