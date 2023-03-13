@@ -31,6 +31,8 @@ class OcorrenciaApiClient {
         "orientacaoGuarda": ocorrencia.orientacaoGuarda.toString(),
         "guarda_id": ocorrencia.guardaId.toString(),
       });
+      print('PRINT DO BODY');
+      print(response.body);
       if (response.statusCode == 200) {
         OcorrenciaModel ocorrenciaModel =
             OcorrenciaModel.fromJson(json.decode(response.body));
@@ -58,6 +60,7 @@ class OcorrenciaApiClient {
       token = auth.accessToken!;
     }
     try {
+      print(baseUrlOcorrencias);
       var response = await http.get(Uri.parse(baseUrlOcorrencias),
           headers: {"Authorization": 'Bearer ' + token});
       if (response.statusCode == 200) {
