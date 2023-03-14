@@ -20,7 +20,7 @@ class _NavDrawerState extends State<NavDrawer> {
       leading: Icon(icon, size: 40),
       title: Text(
         title,
-        style: TextStyle(fontSize: 20),
+        style: const TextStyle(fontSize: 20),
       ),
       onTap: () => {
         acao!(),

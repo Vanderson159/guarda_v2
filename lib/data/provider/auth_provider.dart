@@ -10,29 +10,16 @@ class AuthApiClient {
 
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
-      //var response = await http.post(baseUrl + "/login", body: {
       var response = await http.post(Uri.parse(baseUrlLogin),
           body: {"username": username, "password": password});
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        Get.defaultDialog(
-            title: "Login",
-            content: Text(
-                "${jsonDecode(response.body)['error']} : Usuário Inválido"),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Get.offAllNamed('/login');
-                },
-                child: Text('OK'),
-              ),
-            ]);
-        print('erro -get: ' + response.body);
+        return json.decode(response.body);
       }
     } catch (err) {
       Get.defaultDialog(
-          title: "Falha",
+          title: "Falha Reinicie a Aplicação",
           content: Text(
               "${err}"),
           actions: [
@@ -43,13 +30,11 @@ class AuthApiClient {
               child: Text('OK'),
             ),
           ]);
-      print(err);
     }
     return json.decode(erro);
   }
 
-  Future<Map<String, dynamic>> register(
-      String username, String password) async {
+  Future<Map<String, dynamic>> register(String username, String password) async {
     try {
       //var response = await http.post(baseUrl + "/register", body: {
       var response = await http.post(Uri.parse(baseUrlRegister),

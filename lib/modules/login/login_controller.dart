@@ -8,9 +8,9 @@ import 'package:guardaappv2/data/provider/imagem_provider.dart';
 import 'package:guardaappv2/data/repository/auth_repository.dart';
 
 class LoginController extends GetxController{
+  AuthModel? auth;
   final repository = Get.find<AuthRepository>(); //pega o auth repository iniciado no bind
   final formKey = GlobalKey<FormState>(); //formkey do formulario de login
-  AuthModel? auth;
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
   ImagemApiClient imagemApiClient = ImagemApiClient();
   TextEditingController usernameCtrl =  TextEditingController();
@@ -19,20 +19,50 @@ class LoginController extends GetxController{
   RxBool showPassword = false.obs;
   RxBool loading = false.obs;
 
+  @override
+  void onInit() {
+    limpar();
+    super.onInit();
+  }
+
   void login() async{
     if(formKey.currentState!.validate()){
       loading.value = true;
       auth = await repository.login(usernameCtrl.text, passwordCtrl.text);
-      UserModel? userStorage = auth!.user;
 
-      if(!auth.isNull){
-        box.remove('imagem');
-        box.write('auth', auth);
-        box.write('userStorage', userStorage);
-        Get.offAllNamed('/home');
+      if(auth?.accessToken == null){
+        Get.defaultDialog(
+            title: "Login",
+            content: const Text("Usuário Inválido"),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  loading.value = false;
+                  clearTextControllers();
+                  Get.offAllNamed('/login');
+                },
+                child: Text('OK'),
+              ),
+            ]);
+      }else{
+        UserModel? userStorage = auth!.user;
+        clearTextControllers();
+        if(!auth.isNull){
+          box.remove('imagem');
+          box.write('auth', auth);
+          box.write('userStorage', userStorage);
+          Get.offAllNamed('/home');
+        }
+        loading.value = false;
       }
-      loading.value = false;
     }
+  }
+
+
+  //func para resetar os text controller apos acao de login
+  void clearTextControllers(){
+    usernameCtrl.clear();
+    passwordCtrl.clear();
   }
 
   void limpar(){
