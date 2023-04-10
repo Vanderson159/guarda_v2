@@ -60,4 +60,8 @@ class OcorrenciaModel {
     OcorrenciaModel x = OcorrenciaModel(0, '', '', '', '', '', '', '');
     return x;
   }
+
+  String toString(){
+    return 'BO${this.id}';
+  }
 }

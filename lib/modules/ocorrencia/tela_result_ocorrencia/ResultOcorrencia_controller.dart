@@ -9,6 +9,7 @@ class ResultOcorrenciaController extends GetxController{
   OcorrenciaApiClient ocorrenciaApiClient = OcorrenciaApiClient();
   HomeController homeController = HomeController();
   ImagemApiClient imagemApiClient = ImagemApiClient();
+  List<OcorrenciaModel> listOcorrenciaModel = [];
 
   RxBool loadingPdf = false.obs;
 

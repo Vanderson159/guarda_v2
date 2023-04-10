@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:guardaappv2/api_pdf/pdf_api.dart';
-import 'package:guardaappv2/components/ocorrencia_auth_dialog.dart';
 import 'package:guardaappv2/components/response_dialog.dart';
 import 'package:guardaappv2/components/willPopScope.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
-import 'package:guardaappv2/modules/ocorrencia/tela_consult_ocorrencia/ConsultOcorrencia_view.dart';
+import 'package:guardaappv2/modules/ocorrencia/searchOcorrencias/custom_search.dart';
 import 'package:guardaappv2/modules/ocorrencia/tela_result_ocorrencia/ResultOcorrencia_controller.dart';
 
 
@@ -17,14 +15,27 @@ class ResultOcorrenciaView extends GetView<ResultOcorrenciaController> {
     return WillPopScopeView(
         Scaffold(
           appBar: AppBar(
-            title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Icon(
-                Icons.person,
-                size: 40,
-              ),
-              SizedBox(width: 5),
-              Text(controller.homeController.username())
-            ]),
+            title: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    showSearch(context: context, delegate: CustomSearchDelegate(controller.listOcorrenciaModel, controller.homeController.returnUser().tipoUser));
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                Expanded(child: Text(''),),
+                Icon(
+                  Icons.person,
+                  size: 40,
+                ),
+                SizedBox(width: 5),
+                Text(controller.homeController.username())
+              ],
+            ),
           ),
           body: FutureBuilder<List<OcorrenciaModel>>(
             initialData: [],
@@ -39,7 +50,6 @@ class ResultOcorrenciaView extends GetView<ResultOcorrenciaController> {
                   break;
                 case ConnectionState.done:
                 //final List<Ocorrencia>? ocorrencias = snapshot.data;
-
                   ocorrencialist = snapshot.data;
                   if (ocorrencialist == null) {
                     return FailureDialog('Falha ao listar ocorrências');
@@ -47,6 +57,7 @@ class ResultOcorrenciaView extends GetView<ResultOcorrenciaController> {
                     return ListView.builder(
                       itemBuilder: (context, index) {
                         final OcorrenciaModel ocorrencia = ocorrencialist![index];
+                        controller.listOcorrenciaModel.add(ocorrencia);
                         return OcorrenciatItem(
                           ocorrencia,
                           onClick: () {},
@@ -186,117 +197,7 @@ class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
     }
 
     Widget view() {
-      return index == 0
-          ? Column(
-        children: [
-          Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      enabled: true,
-                      controller: _pesquisaController,
-                      style: TextStyle(fontSize: 23),
-                      decoration: InputDecoration(
-                        hintText: 'Ex: 235',
-                        icon: Icon(
-                          Icons.search,
-                          size: 30,
-                          color: Colors.blue.shade800,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 5),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Colors.blue.shade800),
-                      ),
-                      onPressed: () {
-                        if (_pesquisaController.text == '') {
-                          alertaFunc(
-                              'Informe um número para ser pesquisado');
-                        } else {
-                          var listOcorrenciaSelect = ocorrencialist!
-                              .where((element) =>
-                          element.id ==
-                              int.parse(_pesquisaController.text))
-                              .toList();
-                          if (listOcorrenciaSelect.length <= 0) {
-                            alertaFunc('Ocorrência Inexistente');
-                          } else {
-                            OcorrenciaModel ocorrenciaSelect =
-                            OcorrenciaModel(
-                                listOcorrenciaSelect[0].id,
-                                listOcorrenciaSelect[0].dataHora,
-                                listOcorrenciaSelect[0]
-                                    .boletimAtendimento,
-                                listOcorrenciaSelect[0]
-                                    .boletimOcorrencia,
-                                listOcorrenciaSelect[0].endereco,
-                                listOcorrenciaSelect[0].local,
-                                listOcorrenciaSelect[0].fatos,
-                                listOcorrenciaSelect[0]
-                                    .orientacaoGuarda);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    ConsultOcorrenciaView(
-                                        ocorrenciaSelect),
-                              ),
-                            );
-                          }
-                        }
-                      },
-                      child: Text('Pesquisar'),
-                    ),
-                  ),
-                ],
-              ),
-              Card(
-                child: ListTile(
-                  trailing: Wrap(
-                    spacing: 12, // space between two icons
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (contextDialog) {
-                                return preView();
-                              });
-                        },
-                        icon: Icon(Icons.visibility),
-                      ),
-                    ],
-                  ),
-                  onTap: () => onClick(),
-                  title: Text(
-                    titulo(),
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(
-                      fontSize: 24.0,
-                    ),
-                  ),
-                  subtitle: Text(
-                    controller.convertDataTime(ocorrencia.dataHora.toString()),
-                    // ignore: prefer_const_constructors
-                    style: TextStyle(
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      )
-          : Column(
+      return Column(
         children: [
           Card(
             child: ListTile(

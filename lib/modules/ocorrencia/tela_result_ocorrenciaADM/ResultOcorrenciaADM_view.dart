@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:guardaappv2/api_pdf/pdf_api.dart';
 import 'package:guardaappv2/components/ocorrencia_auth_dialog.dart';
 import 'package:guardaappv2/components/response_dialog.dart';
 import 'package:guardaappv2/components/willPopScope.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
-import 'package:guardaappv2/modules/ocorrencia/tela_consult_ocorrencia/ConsultOcorrencia_view.dart';
+import 'package:guardaappv2/modules/ocorrencia/searchOcorrencias/custom_search.dart';
 import 'package:guardaappv2/modules/ocorrencia/tela_result_ocorrenciaADM/ResultOcorrenciaADM_controller.dart';
 
 List<OcorrenciaModel>? ocorrencialist = [];
@@ -17,14 +16,27 @@ class ResultOcorrenciaADMView extends GetView<ResultOcorrenciaADMController> {
     return WillPopScopeView(
         Scaffold(
           appBar: AppBar(
-            title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Icon(
-                Icons.person,
-                size: 40,
-              ),
-              SizedBox(width: 5),
-              Text(controller.homeController.username())
-            ]),
+            title: Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    showSearch(context: context, delegate: CustomSearchDelegate(controller.listOcorrenciaModel, controller.homeController.returnUser().tipoUser));
+                  },
+                  icon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ),
+                Expanded(child: Text(''),),
+                Icon(
+                  Icons.person,
+                  size: 40,
+                ),
+                SizedBox(width: 5),
+                Text(controller.homeController.username())
+              ],
+            ),
           ),
           body: FutureBuilder<List<OcorrenciaModel>>(
             initialData: [],
@@ -47,6 +59,7 @@ class ResultOcorrenciaADMView extends GetView<ResultOcorrenciaADMController> {
                     return ListView.builder(
                       itemBuilder: (context, index) {
                         final OcorrenciaModel ocorrencia = ocorrencialist![index];
+                        controller.listOcorrenciaModel.add(ocorrencia);
                         return OcorrenciatItemADM(
                           ocorrencia,
                           onClick: () {},
@@ -81,7 +94,6 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
 
   @override
   Widget build(BuildContext context) {
-
     alertaFunc(String label) {
       return showDialog(
           context: context,
@@ -107,25 +119,27 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
           Obx(
             () => Visibility(
               visible: controller.loadingPdf.value,
-              child: Center(child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                width: Get.width * 0.8,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(29),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 40,
-                    ),
-                    child: ElevatedButton(
-                      onPressed: null,
-                      child: CircularProgressIndicator(
-                        color: Colors.blue.shade800,
+              child: Center(
+                child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  width: Get.width * 0.8,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(29),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 40,
+                      ),
+                      child: ElevatedButton(
+                        onPressed: null,
+                        child: CircularProgressIndicator(
+                          color: Colors.blue.shade800,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),),
+              ),
             ),
           ),
           Obx(
@@ -140,7 +154,8 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
                     children: [
                       Text('Data Hora:'),
                       Text(
-                        controller.convertDataTime(ocorrencia.dataHora.toString()),
+                        controller
+                            .convertDataTime(ocorrencia.dataHora.toString()),
                       ),
                       Text('Endereço:'),
                       Text(
@@ -185,180 +200,57 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
     }
 
     Widget view() {
-      return index == 0
-          ? Column(
-              children: [
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            enabled: true,
-                            controller: _pesquisaController,
-                            style: TextStyle(fontSize: 23),
-                            decoration: InputDecoration(
-                              hintText: 'Ex: 235',
-                              icon: Icon(
-                                Icons.search,
-                                size: 30,
-                                color: Colors.blue.shade800,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(right: 5),
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.blue.shade800),
-                            ),
-                            onPressed: () {
-                              if (_pesquisaController.text == '') {
-                                alertaFunc(
-                                    'Informe um número para ser pesquisado');
-                              } else {
-                                var listOcorrenciaSelect = ocorrencialist!
-                                    .where((element) =>
-                                        element.id ==
-                                        int.parse(_pesquisaController.text))
-                                    .toList();
-                                if (listOcorrenciaSelect.length <= 0) {
-                                  alertaFunc('Ocorrência Inexistente');
-                                } else {
-                                  OcorrenciaModel ocorrenciaSelect =
-                                      OcorrenciaModel(
-                                          listOcorrenciaSelect[0].id,
-                                          listOcorrenciaSelect[0].dataHora,
-                                          listOcorrenciaSelect[0]
-                                              .boletimAtendimento,
-                                          listOcorrenciaSelect[0]
-                                              .boletimOcorrencia,
-                                          listOcorrenciaSelect[0].endereco,
-                                          listOcorrenciaSelect[0].local,
-                                          listOcorrenciaSelect[0].fatos,
-                                          listOcorrenciaSelect[0]
-                                              .orientacaoGuarda);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          ConsultOcorrenciaView(
-                                              ocorrenciaSelect),
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            child: Text('Pesquisar'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Card(
-                      child: ListTile(
-                        trailing: Wrap(
-                          spacing: 12, // space between two icons
-                          children: <Widget>[
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (contextDialog) {
-                                      return preView();
-                                    });
-                              },
-                              icon: Icon(Icons.visibility),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (contextDialog) {
-                                      return OcorrenciaAuthDialog(
-                                        ocorrencia: ocorrencia,
-                                        tipoMessage: 2,
-                                      );
-                                    });
-                              },
-                              icon: Icon(Icons.delete),
-                            ),
-                          ],
-                        ),
-                        onTap: () => onClick(),
-                        title: Text(
-                          titulo(),
-                          // ignore: prefer_const_constructors
-                          style: TextStyle(
-                            fontSize: 24.0,
-                          ),
-                        ),
-                        subtitle: Text(
-                          controller.convertDataTime(ocorrencia.dataHora.toString()),
-                          // ignore: prefer_const_constructors
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            )
-          : Column(
-              children: [
-                Card(
-                  child: ListTile(
-                    trailing: Wrap(
-                      spacing: 12, // space between two icons
-                      children: <Widget>[
-                        IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (contextDialog) {
-                                  return preView();
-                                });
-                          },
-                          icon: Icon(Icons.visibility),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (contextDialog) {
-                                  return OcorrenciaAuthDialog(
-                                    ocorrencia: ocorrencia,
-                                    tipoMessage: 2,
-                                  );
-                                });
-                          },
-                          icon: Icon(Icons.delete),
-                        ),
-                      ],
-                    ),
-                    onTap: () => onClick(),
-                    title: Text(
-                      titulo(),
-                      // ignore: prefer_const_constructors
-                      style: TextStyle(
-                        fontSize: 24.0,
-                      ),
-                    ),
-                    subtitle: Text(
-                      controller.convertDataTime(ocorrencia.dataHora.toString()),
-                      // ignore: prefer_const_constructors
-                      style: TextStyle(
-                        fontSize: 16.0,
-                      ),
-                    ),
+      return Column(
+        children: [
+          Card(
+            child: ListTile(
+              trailing: Wrap(
+                spacing: 12, // space between two icons
+                children: <Widget>[
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) {
+                            return preView();
+                          });
+                    },
+                    icon: Icon(Icons.visibility),
                   ),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (contextDialog) {
+                            return OcorrenciaAuthDialog(
+                              ocorrencia: ocorrencia,
+                              tipoMessage: 2,
+                            );
+                          });
+                    },
+                    icon: Icon(Icons.delete),
+                  ),
+                ],
+              ),
+              onTap: () => onClick(),
+              title: Text(
+                titulo(),
+                // ignore: prefer_const_constructors
+                style: TextStyle(
+                  fontSize: 24.0,
                 ),
-              ],
-            );
+              ),
+              subtitle: Text(
+                controller.convertDataTime(ocorrencia.dataHora.toString()),
+                // ignore: prefer_const_constructors
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
     }
 
     return view();
