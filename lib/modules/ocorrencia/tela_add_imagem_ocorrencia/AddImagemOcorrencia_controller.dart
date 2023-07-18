@@ -15,7 +15,10 @@ class AddImagemOcorrenciaController extends GetxController{
   }
 
   int tutorialGet(){
-    int tutorial = box.read('tutorial');
+    int tutorial = 0;
+    if (box.read('tutorial') != null) {
+      return tutorial = box.read('tutorial');
+    }
     return tutorial;
   }
 
@@ -36,7 +39,11 @@ class AddImagemOcorrenciaController extends GetxController{
   }
 
   List<ImagemModel> resgatarImagem(){
-    List<ImagemModel> imagem = box.read('imagem');
+    List<ImagemModel> imagem = [];
+    if(box.read('imagem') != null) {
+      imagem = box.read('imagem');
+      return imagem;
+    }
     return imagem;
   }
 

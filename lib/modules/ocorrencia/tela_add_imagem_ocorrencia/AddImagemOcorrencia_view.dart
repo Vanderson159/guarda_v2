@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:carousel_pro/carousel_pro.dart';
+// import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/components/imagem_auth_dialog.dart';
@@ -62,7 +63,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
       if (controller.tutorialGet() == null || controller.tutorialGet() == 0) {
         return Get.defaultDialog(
             title: "AVISO",
-            content: Column(
+            content: const Column(
               children: [
                 Center(
                   child: Text('Para uma melhor visualização'),
@@ -162,7 +163,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
     }
 
     viewsImages(List<Uint8List> listBytes) {
-      List<dynamic> imagens = [];
+      List<Widget> imagens = [];
 
       for (int i = 0; i < listBytes.length; i++) {
         imagens.add(
@@ -197,11 +198,11 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
         );
       }
 
-      return Carousel(autoplay: false, images: imagens);
+      return FlutterCarousel(items: imagens, options: CarouselOptions(),);
     }
 
     Widget imageView() {
-      if (controller.resgatarImagem() != null && controller.resgatarImagem().length > 0) {
+      if (controller.resgatarImagem().length > 0) {
         List<ImagemModel> listImagemTemp = controller.resgatarImagem();
         List<Uint8List> listBytes = imagesBytes(listImagemTemp);
 
