@@ -170,15 +170,16 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
           Container(
             width: 350,
             height: 450,
-            child: Column(
+            child: Wrap(
+              alignment: WrapAlignment.center,
               children: [
                 Image.memory(
                   listBytes[i],
-                  width: 350,
+                  width: 250,
                   height: 350,
                 ),
-                SizedBox(
-                  height: 4,
+                const SizedBox(
+                  height: 5,
                 ),
                 TextButton(
                   onPressed: () {
@@ -187,7 +188,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                     controller.armazenarImagem(aux);
                     Get.offAllNamed('/tela-addImgOcorrencia');
                   },
-                  child: Text(
+                  child: const Text(
                     "Remover Imagem",
                     style: TextStyle(color: Colors.red),
                   ),
@@ -198,7 +199,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
         );
       }
 
-      return FlutterCarousel(items: imagens, options: CarouselOptions(),);
+      return FlutterCarousel(items: imagens, options: CarouselOptions(autoPlay: false),);
     }
 
     Widget imageView() {
@@ -235,14 +236,14 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
             animatedIcon: AnimatedIcons.menu_close,
             children: [
               SpeedDialChild(
-                child: Icon(Icons.add_a_photo),
+                child: const Icon(Icons.add_a_photo),
                 label: 'Selecionar Imagens',
                 onTap: (){
                   getImage();
                 }
               ),
               SpeedDialChild(
-                  child: Icon(Icons.save),
+                  child: const Icon(Icons.save),
                   label: 'Salvar Imagens',
                   onTap: (){
                     List<ImagemModel> imagemTemp =
@@ -266,7 +267,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                   }
               ),
               SpeedDialChild(
-                  child: Icon(Icons.done),
+                  child: const Icon(Icons.done),
                   label: 'Finalizar',
                   onTap: (){
                     showDialog(
@@ -274,19 +275,17 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
                         context: context,
                         builder: (contextDialog) {
                           return AlertDialog(
-                            title: Text(
+                            title: const Text(
                                 'Deseja Finalizar a Inserção de Imagens?'),
                             actions: <Widget>[
                               ElevatedButton(
-                                //nãoooooo
-                                child: Text("NÂO"),
+                                child: const Text("NÂO"),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
                               ElevatedButton(
-                                //nãoooooo
-                                child: Text("SIM"),
+                                child: const Text("SIM"),
                                 onPressed: () {
                                   controller.resetarImagem();
                                   Get.offAllNamed('/home');
@@ -302,11 +301,11 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
           drawer: drawer,
           appBar: AppBar(
             title: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-              Icon(
+              const Icon(
                 Icons.person,
                 size: 40,
               ),
-              SizedBox(width: 5),
+              const SizedBox(width: 5),
               Text(controller.username())
             ]),
           ),
@@ -316,7 +315,7 @@ class AddImagemOcorrenciaView extends GetView<AddImagemOcorrenciaController> {
               children: [
                 Column(
                   children: [
-                    Text("Ocorrência: $idOcorrenciaAtual", style: TextStyle(
+                    Text("Ocorrência: $idOcorrenciaAtual", style: const TextStyle(
                         fontSize: 20
                     ),),
                     Center(
