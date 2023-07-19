@@ -30,7 +30,7 @@ migrate_working_dir/
 .packages
 .pub-cache/
 .pub/
-.pubspeck.lock
+pubspec.lock
 /build/
 windows/flutter/generated_plugin_registrant.cc
 windows/flutter/generated_plugin_registrant.h
@@ -41,13 +41,13 @@ linux/flutter/generated_plugins.cmake
 
 # Web related
 lib/generated_plugin_registrant.dart
-
+pubspec.lock
 # Symbolication related
 app.*.symbols
-
+pubspec.lock
 # Obfuscation related
 app.*.map.json
-
+pubspec.lock
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
