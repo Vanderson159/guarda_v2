@@ -5,12 +5,13 @@ import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/base_url.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:guardaappv2/data/provider/http_overrides.dart';
+import 'package:http/io_client.dart';
 
 class OcorrenciaApiClient {
-  final http.Client httpClient = http.Client();
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
   String erro = 'ERRO NO OCORRÊNCIA API CLIENT';
+  final http = IOClient(HttpOverridesProvider.overrides());
 
   Future inserir(OcorrenciaModel ocorrencia) async {
     AuthModel auth = box.read('auth');
@@ -31,8 +32,7 @@ class OcorrenciaApiClient {
         "orientacaoGuarda": ocorrencia.orientacaoGuarda.toString(),
         "guarda_id": ocorrencia.guardaId.toString(),
       });
-      print('PRINT DO BODY');
-      print(response.body);
+
       if (response.statusCode == 200) {
         OcorrenciaModel ocorrenciaModel =
             OcorrenciaModel.fromJson(json.decode(response.body));
@@ -60,7 +60,6 @@ class OcorrenciaApiClient {
       token = auth.accessToken!;
     }
     try {
-      print(baseUrlOcorrencias);
       var response = await http.get(Uri.parse(baseUrlOcorrencias),
           headers: {"Authorization": 'Bearer ' + token});
       if (response.statusCode == 200) {
@@ -79,7 +78,7 @@ class OcorrenciaApiClient {
               actions: [
                 ElevatedButton(
                   onPressed: () => Get.offAllNamed('/home'),
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ]);
         }
@@ -89,14 +88,12 @@ class OcorrenciaApiClient {
             title: "Erro ao listar ocorrências",
             content: Text(
                 "${jsonDecode(response.body)['error']} : Falha ao listar"));
-        print('erro -get: ' + response.body);
       }
     } catch (err) {
       Get.defaultDialog(
         title: "Erro na listagem das Ocorrências",
         content: Text("$err"),
       );
-      print(err);
     }
     return json.decode(erro);
   }
@@ -142,5 +139,32 @@ class OcorrenciaApiClient {
       }
     }
     return 0;
+  }
+
+  Future<List<String>> gerarPdf(int? id) async {
+    List<String> dadosPdf = [];
+    AuthModel auth = box.read('auth');
+    String token = '';
+    if (auth.accessToken!.isNotEmpty) {
+      token = auth.accessToken!;
+    }
+    
+    try{
+      var response = await http.post(Uri.parse(baseUrlGerarPdf),
+          headers: {"Authorization": 'Bearer ' + token},
+          body: {"id": id.toString()}
+      );
+
+      if (response.statusCode == 200) {
+        var retorno = json.decode(response.body);
+        String base64Pdf = retorno['base64Pdf'].toString();
+        String namePdf = retorno['pdfFileName'].toString();
+        List<String> dadosPdf = [base64Pdf, namePdf];
+        return dadosPdf;
+      }
+    } catch (err) {
+      return dadosPdf;
+    }
+    return dadosPdf;
   }
 }
