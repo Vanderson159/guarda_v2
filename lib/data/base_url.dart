@@ -1,4 +1,4 @@
-const baseHost = 'https://6161-186-251-193-160.ngrok-free.app/guarda_projects/';
+const baseHost = 'https://0332-186-251-193-160.ngrok-free.app/guarda_projects/';
 const baseUrl = '${baseHost}guardaWEBapi/api';
 const baseUrlLogin = '${baseHost}guardaWEBapi/api/login';
 const baseUrlRegister = '${baseHost}guardaWEBapi/api/register';
@@ -9,3 +9,4 @@ const baseUrlQrcodeInsert = '${baseHost}guardaWEBapi/api/insertQrcode';
 const baseUrlQrcodBuscarIdImg = '${baseHost}guardaWEBapi/api/buscarIdImage';
 const baseUrlQrcodBuscarQrCode = '${baseHost}guardaWEBapi/api/buscarQrcode';
 const baseUrlArquivar = '${baseHost}guardaWEBapi/api/arquivar';
+const baseUrlGerarPdf = '${baseHost}guardaWEBapi/api/gerarPdfOcorrencia';

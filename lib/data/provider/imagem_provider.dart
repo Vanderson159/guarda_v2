@@ -3,10 +3,11 @@ import 'package:get_storage/get_storage.dart';
 import 'package:guardaappv2/data/base_url.dart';
 import 'package:guardaappv2/data/model/auth_model.dart';
 import 'package:guardaappv2/data/model/imagem_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:guardaappv2/data/provider/http_overrides.dart';
+import 'package:http/io_client.dart';
 
 class ImagemApiClient {
-  final http.Client httpClient = http.Client();
+  final http = IOClient(HttpOverridesProvider.overrides());
   final box = GetStorage('guardaapp'); //instancia definida no arquivo main
   String erro = 'ERRO NO QRCODE API CLIENT';
   

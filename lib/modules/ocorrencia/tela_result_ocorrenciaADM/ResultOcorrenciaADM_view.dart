@@ -112,7 +112,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
           });
     }
 
-    preView() {
+    preView(context) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -199,7 +199,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
       );
     }
 
-    Widget view() {
+    Widget view(context) {
       return Column(
         children: [
           Card(
@@ -212,7 +212,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
                       showDialog(
                           context: context,
                           builder: (contextDialog) {
-                            return preView();
+                            return preView(context);
                           });
                     },
                     icon: Icon(Icons.visibility),
@@ -253,7 +253,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
       );
     }
 
-    return view();
+    return view(context);
   }
 }
 

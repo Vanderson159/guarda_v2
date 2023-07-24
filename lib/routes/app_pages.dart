@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:guardaappv2/components/pdfViwer/pdfViewer_view.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
 import 'package:guardaappv2/modules/home/home_binding.dart';
 import 'package:guardaappv2/modules/home/home_view.dart';
@@ -65,6 +66,11 @@ class AppPages{
     GetPage(
       name: Routes.TELA_CONSULT_CORRENCIA,
       page: ()=> ConsultOcorrenciaView(OcorrenciaModel.tempOcorrencia()),
+      binding: ConsultOcorrenciabinding(),
+    ),
+    GetPage(
+      name: Routes.VISUALIZAR_PDF,
+      page: ()=> PdfViewerView(),
       binding: ConsultOcorrenciabinding(),
     ),
     /*

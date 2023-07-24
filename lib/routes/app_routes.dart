@@ -9,4 +9,5 @@ abstract class Routes{
   static const TELA_CONSULT_CORRENCIA = '/tela-consultOcorrenciaADM';
   static const TELA_RESULT_CORRENCIA_ADM = '/tela-resultOcorrenciaADM';
   static const TELA_RESULT_CORRENCIA = '/tela-resultOcorrencia';
+  static const VISUALIZAR_PDF = '/visualizar-pdf';
 }
