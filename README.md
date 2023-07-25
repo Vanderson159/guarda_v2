@@ -1,16 +1,7 @@
-# guardaappv2
+# Flutter APP - Guarda Municipal
 
-app guarda municipal
+Aplicativo desenvolvida para facilitar a
+abertura de B.O dos Guardas Municipais
+quando estão em campo. Esse app é alimentado
+por uma API ---> https://github.com/Vanderson159/guardaWEBapi
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
