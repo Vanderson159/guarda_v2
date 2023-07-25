@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lecle_downloads_path_provider/lecle_downloads_path_provider.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
@@ -7,15 +9,91 @@ class PdfViewerController extends GetxController{
   String filePath = '';
 
   Future <String> openPdf(String name, String base64Pdf) async{
-    String base64 = 'JVBERi0xLjcKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZwovT3V0bGluZXMgMiAwIFIKL1BhZ2VzIDMgMCBSID4+CmVuZG9iagoyIDAgb2JqCjw8IC9UeXBlIC9PdXRsaW5lcyAvQ291bnQgMCA+PgplbmRvYmoKMyAwIG9iago8PCAvVHlwZSAvUGFnZXMKL0tpZHMgWzYgMCBSCl0KL0NvdW50IDEKL1Jlc291cmNlcyA8PAovUHJvY1NldCA0IDAgUgovRm9udCA8PCAKL0YxIDggMCBSCi9GMiA5IDAgUgo+Pgo+PgovTWVkaWFCb3ggWzAuMDAwIDAuMDAwIDU5NS4yODAgODQxLjg5MF0KID4+CmVuZG9iago0IDAgb2JqClsvUERGIC9UZXh0IF0KZW5kb2JqCjUgMCBvYmoKPDwKL1Byb2R1Y2VyICj+/wBkAG8AbQBwAGQAZgAgADIALgAwAC4AMwAgACsAIABDAFAARABGKQovQ3JlYXRpb25EYXRlIChEOjIwMjMwNzIzMTMwNzI2KzAwJzAwJykKL01vZERhdGUgKEQ6MjAyMzA3MjMxMzA3MjYrMDAnMDAnKQovVGl0bGUgKP7/AFAARABGKQo+PgplbmRvYmoKNiAwIG9iago8PCAvVHlwZSAvUGFnZQovTWVkaWFCb3ggWzAuMDAwIDAuMDAwIDU5NS4yODAgODQxLjg5MF0KL1BhcmVudCAzIDAgUgovQ29udGVudHMgNyAwIFIKPj4KZW5kb2JqCjcgMCBvYmoKPDwgL0ZpbHRlciAvRmxhdGVEZWNvZGUKL0xlbmd0aCAzMDMgPj4Kc3RyZWFtCnicfZLPSgMxEIfvfYo5KpQ0yW4mm95abRURKrg38TDsRrvYbiRNkT6vh4JP4YqgFSZe5vb9vvk3kkJKCac1Po/mNShEgSjBVkZINFC3MFlq0KWQUD8BPJzNw8anbguth1UTYvzom45A2/NHqG9gUX+lFCg0Ilg0wkr7HaJA6Z+QS0oEHq5DpOkpqEorKif/IZWbSDvRUheg1NTgtDScuaxEaRTDz1cwS75vu63vU+DlWTj5XfKcrlBCOcPrfrfE27Js1qYK4QrHEIu+9dEfM2Nlsdn2dd2ltacUPdxRfHmjwxjGcE/9cKaLDcWhhn2fDkw36IaPqQom9jY0tGFbyTO5mdE6UWruIZaUwo63ZJmsBbVQlrv8KnbDv9DxPUBLcLWn2PLnzEf8kX4Cvg/b1wplbmRzdHJlYW0KZW5kb2JqCjggMCBvYmoKPDwgL1R5cGUgL0ZvbnQKL1N1YnR5cGUgL1R5cGUxCi9OYW1lIC9GMQovQmFzZUZvbnQgL1RpbWVzLVJvbWFuCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCj4+CmVuZG9iago5IDAgb2JqCjw8IC9UeXBlIC9Gb250Ci9TdWJ0eXBlIC9UeXBlMQovTmFtZSAvRjIKL0Jhc2VGb250IC9UaW1lcy1Cb2xkCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCj4+CmVuZG9iagoxMCAwIG9iagpbNiAwIFIgL0ZpdF0KZW5kb2JqCnhyZWYKMCAxMQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA3NCAwMDAwMCBuIAowMDAwMDAwMTIwIDAwMDAwIG4gCjAwMDAwMDAyODQgMDAwMDAgbiAKMDAwMDAwMDMxMyAwMDAwMCBuIAowMDAwMDAwNDgwIDAwMDAwIG4gCjAwMDAwMDA1ODMgMDAwMDAgbiAKMDAwMDAwMDk1OCAwMDAwMCBuIAowMDAwMDAxMDY3IDAwMDAwIG4gCjAwMDAwMDExNzUgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSAxMQovUm9vdCAxIDAgUgovSW5mbyA1IDAgUgovSURbPGI1MzU5MzAyNTRmYTc0ZmI1MmMxNzRiMDJjMmQyYzJmPjxiNTM1OTMwMjU0ZmE3NGZiNTJjMTc0YjAyYzJkMmMyZj5dCj4+CnN0YXJ0eHJlZgoxMjA0CiUlRU9GCg==';
-    var pdfBytes = base64Decode(base64);
+    var pdfBytes = base64Decode(base64Pdf);
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/$name');
+
+    // Defina o nome do subdiretório que você deseja criar
+    String subDirectoryName = "pdf_gerados";
+
+    // Obtenha o caminho completo para o subdiretório
+    String subDirectoryPath = '${dir.path}/$subDirectoryName';
+
+    await checkDirectoryExists(subDirectoryPath).then((value) async {
+      if (!value) {
+        // Crie o diretório, caso ainda não exista
+        await Directory(subDirectoryPath).create(recursive: true);
+      }
+    });
+
+    final file = File('$subDirectoryPath/$name');
     await file.writeAsBytes(pdfBytes);
-    return filePath = file.path;
+
+    return file.path;
+  }
+
+  Future<bool> checkDirectoryExists(String dirPath) async {
+    final directory = Directory(dirPath);
+    bool exists = await directory.exists();
+
+    if (exists) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void copyFile(String sourcePath, String destinationPath) {
+    File sourceFile = File(sourcePath);
+    if (sourceFile.existsSync()) {
+      sourceFile.copySync(destinationPath);
+      debugPrint('Arquivo copiado com sucesso!');
+    } else {
+      debugPrint('Arquivo de origem não encontrado.');
+    }
+  }
+
+  Future<void> moveFileToDownloadFolder(String filePath) async{
+    try {
+      var downloadsPath = (await DownloadsPath.downloadsDirectory())?.path;
+
+      checkDirectoryExists(downloadsPath!).then((value) async {
+        if (!value) {
+           await Directory(downloadsPath).create(recursive: true);
+           debugPrint('diretorio criado: $downloadsPath');
+        }
+      });
+      // Extrair o nome do arquivo a partir do caminho do arquivo original
+      String fileName = filePath.split('/').last;
+
+      // Construir o novo caminho do arquivo na pasta de downloads
+      String newFilePath = '$downloadsPath/$fileName';
+
+      copyFile(filePath, newFilePath);
+      // Mover o arquivo usando o método 'rename' da classe 'File'
+      // await File(filePath).rename(newFilePath);
+    } catch (e) {
+      debugPrint('Erro ao mover o arquivo: $e');
+    }
   }
 
   void callViewPdf(String pdfUrl) {
     Get.toNamed('/visualizar-pdf', arguments: {'pdfUrl': pdfUrl});
+  }
+
+  Future<String?> getDownloadPath() async {
+    Directory? directory;
+    try {
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        directory = Directory('/storage/emulated/0/Download');
+        // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+        // ignore: avoid_slow_async_io
+        if (!await directory.exists()) directory = await getExternalStorageDirectory();
+      }
+    } catch (err, stack) {
+      debugPrint("Cannot get download folder path");
+    }
+    return directory?.path;
   }
 }

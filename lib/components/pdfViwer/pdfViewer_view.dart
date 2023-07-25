@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
 import 'package:guardaappv2/components/pdfViwer/pdfViewer_controller.dart';
 
 class PdfViewerView extends GetView<PdfViewerController> {
-
-  String base64 = 'JVBERi0xLjcKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZwovT3V0bGluZXMgMiAwIFIKL1BhZ2VzIDMgMCBSID4+CmVuZG9iagoyIDAgb2JqCjw8IC9UeXBlIC9PdXRsaW5lcyAvQ291bnQgMCA+PgplbmRvYmoKMyAwIG9iago8PCAvVHlwZSAvUGFnZXMKL0tpZHMgWzYgMCBSCl0KL0NvdW50IDEKL1Jlc291cmNlcyA8PAovUHJvY1NldCA0IDAgUgovRm9udCA8PCAKL0YxIDggMCBSCi9GMiA5IDAgUgo+Pgo+PgovTWVkaWFCb3ggWzAuMDAwIDAuMDAwIDU5NS4yODAgODQxLjg5MF0KID4+CmVuZG9iago0IDAgb2JqClsvUERGIC9UZXh0IF0KZW5kb2JqCjUgMCBvYmoKPDwKL1Byb2R1Y2VyICj+/wBkAG8AbQBwAGQAZgAgADIALgAwAC4AMwAgACsAIABDAFAARABGKQovQ3JlYXRpb25EYXRlIChEOjIwMjMwNzIzMTMwNzI2KzAwJzAwJykKL01vZERhdGUgKEQ6MjAyMzA3MjMxMzA3MjYrMDAnMDAnKQovVGl0bGUgKP7/AFAARABGKQo+PgplbmRvYmoKNiAwIG9iago8PCAvVHlwZSAvUGFnZQovTWVkaWFCb3ggWzAuMDAwIDAuMDAwIDU5NS4yODAgODQxLjg5MF0KL1BhcmVudCAzIDAgUgovQ29udGVudHMgNyAwIFIKPj4KZW5kb2JqCjcgMCBvYmoKPDwgL0ZpbHRlciAvRmxhdGVEZWNvZGUKL0xlbmd0aCAzMDMgPj4Kc3RyZWFtCnicfZLPSgMxEIfvfYo5KpQ0yW4mm95abRURKrg38TDsRrvYbiRNkT6vh4JP4YqgFSZe5vb9vvk3kkJKCac1Po/mNShEgSjBVkZINFC3MFlq0KWQUD8BPJzNw8anbguth1UTYvzom45A2/NHqG9gUX+lFCg0Ilg0wkr7HaJA6Z+QS0oEHq5DpOkpqEorKif/IZWbSDvRUheg1NTgtDScuaxEaRTDz1cwS75vu63vU+DlWTj5XfKcrlBCOcPrfrfE27Js1qYK4QrHEIu+9dEfM2Nlsdn2dd2ltacUPdxRfHmjwxjGcE/9cKaLDcWhhn2fDkw36IaPqQom9jY0tGFbyTO5mdE6UWruIZaUwo63ZJmsBbVQlrv8KnbDv9DxPUBLcLWn2PLnzEf8kX4Cvg/b1wplbmRzdHJlYW0KZW5kb2JqCjggMCBvYmoKPDwgL1R5cGUgL0ZvbnQKL1N1YnR5cGUgL1R5cGUxCi9OYW1lIC9GMQovQmFzZUZvbnQgL1RpbWVzLVJvbWFuCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCj4+CmVuZG9iago5IDAgb2JqCjw8IC9UeXBlIC9Gb250Ci9TdWJ0eXBlIC9UeXBlMQovTmFtZSAvRjIKL0Jhc2VGb250IC9UaW1lcy1Cb2xkCi9FbmNvZGluZyAvV2luQW5zaUVuY29kaW5nCj4+CmVuZG9iagoxMCAwIG9iagpbNiAwIFIgL0ZpdF0KZW5kb2JqCnhyZWYKMCAxMQowMDAwMDAwMDAwIDY1NTM1IGYgCjAwMDAwMDAwMDkgMDAwMDAgbiAKMDAwMDAwMDA3NCAwMDAwMCBuIAowMDAwMDAwMTIwIDAwMDAwIG4gCjAwMDAwMDAyODQgMDAwMDAgbiAKMDAwMDAwMDMxMyAwMDAwMCBuIAowMDAwMDAwNDgwIDAwMDAwIG4gCjAwMDAwMDA1ODMgMDAwMDAgbiAKMDAwMDAwMDk1OCAwMDAwMCBuIAowMDAwMDAxMDY3IDAwMDAwIG4gCjAwMDAwMDExNzUgMDAwMDAgbiAKdHJhaWxlcgo8PAovU2l6ZSAxMQovUm9vdCAxIDAgUgovSW5mbyA1IDAgUgovSURbPGI1MzU5MzAyNTRmYTc0ZmI1MmMxNzRiMDJjMmQyYzJmPjxiNTM1OTMwMjU0ZmE3NGZiNTJjMTc0YjAyYzJkMmMyZj5dCj4+CnN0YXJ0eHJlZgoxMjA0CiUlRU9GCg==';
-
-  PdfViewerView({super.key});
+  const PdfViewerView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final args = Get.arguments;
     String? pdfUrl = args != null ? args['pdfUrl'] : null;
     return Scaffold(
+      floatingActionButton: SpeedDial(
+        icon: Icons.download,
+        backgroundColor: Colors.blue.shade800,
+        onPress: (){
+          controller.moveFileToDownloadFolder(pdfUrl!);
+        },
+      ),
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Visualizar PDF'),
       ),
       body: PDFView(
         filePath: pdfUrl,
         enableSwipe: true,
-        swipeHorizontal: true,
         autoSpacing: false,
         pageSnap: true,
       ),
