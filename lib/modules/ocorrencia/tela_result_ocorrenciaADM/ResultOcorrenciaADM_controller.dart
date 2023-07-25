@@ -16,6 +16,7 @@ class ResultOcorrenciaADMController extends GetxController{
   RxBool loadingPdf = false.obs;
 
   void pdfCall(OcorrenciaModel ocorrencia) async {
+    loadingPdf.value = true;
     ocorrenciaApiClient.gerarPdf(ocorrencia.id).then((value) {
       if (value.length > 0) {
         pdfViewerController.openPdf(value[1], value[0]).then((value) {
@@ -27,6 +28,7 @@ class ResultOcorrenciaADMController extends GetxController{
         print('erro ao gerar pdf');
       }
     });
+    loadingPdf.value = false;
   }
 
   String convertDataTime(String dataHora){

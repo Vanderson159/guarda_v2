@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:guardaappv2/api_pdf/pdf_api.dart';
+import 'package:guardaappv2/components/pdfViwer/pdfViewer_controller.dart';
 import 'package:guardaappv2/data/model/ocorrencia_model.dart';
 import 'package:guardaappv2/data/provider/imagem_provider.dart';
 import 'package:guardaappv2/data/provider/ocorrenica_provider.dart';
@@ -10,31 +10,24 @@ class ResultOcorrenciaController extends GetxController{
   HomeController homeController = HomeController();
   ImagemApiClient imagemApiClient = ImagemApiClient();
   List<OcorrenciaModel> listOcorrenciaModel = [];
+  PdfViewerController pdfViewerController = PdfViewerController();
 
   RxBool loadingPdf = false.obs;
 
   void pdfCall(OcorrenciaModel ocorrencia) async {
     loadingPdf.value = true;
-    imagemApiClient.buscarIdImage(ocorrencia.id).then((value) async {
-      if (value.isEmpty) {
-        final pdfFile = await PdfApi.generatePDF(ocorrenciaAUX: ocorrencia);
-        loadingPdf.value = false;
-        PdfApi.openFile(pdfFile);
-      } else {
-        imagemApiClient
-            .qrCodeInsert(ocorrencia.id)
-            .then((value2) async {
-          ocorrenciaApiClient
-              .buscarQrcode(ocorrencia.id)
-              .then((value3) async {
-            String base64 = value3;
-            final pdfFile = await PdfApi.generatePDF(ocorrenciaAUX: ocorrencia, imagens: value, base64qrcode: base64);
-            loadingPdf.value = false;
-            PdfApi.openFile(pdfFile);
-          });
+    ocorrenciaApiClient.gerarPdf(ocorrencia.id).then((value) {
+      if (value.length > 0) {
+        pdfViewerController.openPdf(value[1], value[0]).then((value) {
+          if (value != '') {
+            pdfViewerController.callViewPdf(value);
+          }
         });
+      }else{
+        print('erro ao gerar pdf');
       }
     });
+    loadingPdf.value = false;
   }
 
   String convertDataTime(String dataHora){

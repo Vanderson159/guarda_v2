@@ -7,6 +7,8 @@ import 'package:path_provider/path_provider.dart';
 
 class PdfViewerController extends GetxController{
   String filePath = '';
+  RxBool loading = false.obs;
+  RxBool ignorePointer = false.obs;
 
   Future <String> openPdf(String name, String base64Pdf) async{
     var pdfBytes = base64Decode(base64Pdf);
@@ -53,6 +55,7 @@ class PdfViewerController extends GetxController{
   }
 
   Future<void> moveFileToDownloadFolder(String filePath) async{
+    loading.value= true;
     try {
       var downloadsPath = (await DownloadsPath.downloadsDirectory())?.path;
 
@@ -69,11 +72,10 @@ class PdfViewerController extends GetxController{
       String newFilePath = '$downloadsPath/$fileName';
 
       copyFile(filePath, newFilePath);
-      // Mover o arquivo usando o método 'rename' da classe 'File'
-      // await File(filePath).rename(newFilePath);
     } catch (e) {
       debugPrint('Erro ao mover o arquivo: $e');
     }
+    loading.value= false;
   }
 
   void callViewPdf(String pdfUrl) {

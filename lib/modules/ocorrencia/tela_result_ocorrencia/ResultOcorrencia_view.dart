@@ -186,7 +186,7 @@ class OcorrenciatItem extends GetView<ResultOcorrenciaController> {
                     onPressed: () {
                       controller.pdfCall(ocorrencia);
                     },
-                    child: Text('IMPRIMIR'),
+                    child: const Text('IMPRIMIR'),
                   ),
                 ],
               ),

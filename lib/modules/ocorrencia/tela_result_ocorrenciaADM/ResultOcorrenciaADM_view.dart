@@ -189,7 +189,7 @@ class OcorrenciatItemADM extends GetView<ResultOcorrenciaADMController> {
                     onPressed: () {
                       controller.pdfCall(ocorrencia);
                     },
-                    child: Text('IMPRIMIR'),
+                    child: const Text('IMPRIMIR'),
                   ),
                 ],
               ),
