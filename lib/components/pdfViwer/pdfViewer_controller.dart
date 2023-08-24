@@ -44,7 +44,7 @@ class PdfViewerController extends GetxController{
     }
   }
 
-  void copyFile(String sourcePath, String destinationPath) {
+  copyFile(String sourcePath, String destinationPath) {
     File sourceFile = File(sourcePath);
     if (sourceFile.existsSync()) {
       sourceFile.copySync(destinationPath);
@@ -54,28 +54,50 @@ class PdfViewerController extends GetxController{
     }
   }
 
-  Future<void> moveFileToDownloadFolder(String filePath) async{
-    loading.value= true;
+  Future<void> moveFileToDownloadFolder(String filePath, BuildContext context) async{
+    loading.value = true;
     try {
       var downloadsPath = (await DownloadsPath.downloadsDirectory())?.path;
 
-      checkDirectoryExists(downloadsPath!).then((value) async {
+      await checkDirectoryExists(downloadsPath!).then((value) async {
         if (!value) {
-           await Directory(downloadsPath).create(recursive: true);
-           debugPrint('diretorio criado: $downloadsPath');
+          await Directory(downloadsPath).create(recursive: true);
+          debugPrint('diretorio criado: $downloadsPath');
         }
       });
+
       // Extrair o nome do arquivo a partir do caminho do arquivo original
       String fileName = filePath.split('/').last;
 
       // Construir o novo caminho do arquivo na pasta de downloads
       String newFilePath = '$downloadsPath/$fileName';
 
-      copyFile(filePath, newFilePath);
+      await copyFile(filePath, newFilePath);
+
+      // Adicionar um atraso de 2 segundos
+      await Future.delayed(const Duration(seconds: 2));
+
+      loading.value = false;
+
+      return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Sucesso'),
+            content: Text('Download feito com sucesso, verifique na sua pasta download!'),
+            actions: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: Text('OK'),
+              )
+            ],
+          );
+        }
+      );
     } catch (e) {
       debugPrint('Erro ao mover o arquivo: $e');
     }
-    loading.value= false;
+    loading.value = false;
   }
 
   void callViewPdf(String pdfUrl) {

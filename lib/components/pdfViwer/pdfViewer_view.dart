@@ -17,7 +17,7 @@ class PdfViewerView extends GetView<PdfViewerController> {
         icon: Icons.download,
         backgroundColor: Colors.blue.shade800,
         onPress: () {
-          controller.moveFileToDownloadFolder(pdfUrl!);
+          controller.moveFileToDownloadFolder(pdfUrl!, context);
         },
       ),
       appBar: AppBar(
@@ -56,7 +56,7 @@ class PdfViewerView extends GetView<PdfViewerController> {
                     Container(
                       height: 50,
                       width: 50,
-                      child: CircularProgressIndicator(),
+                      child: const CircularProgressIndicator(),
                     ),
                   ],
                 ),
